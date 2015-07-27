@@ -143,11 +143,9 @@ var FormExplainerImage = React.createClass({
 var TermWithDefinition = React.createClass({
     render: function () {
         var item = this.props.item;
-        var style = this.props.visible ? {} : {display: 'none'};
         return (
             <div className={"expandable expandable__padded expandable__form-explainer expandable__form-explainer-" + item.category}
-                   id={item.category + '-' + item.id}
-                   style={style}>
+                   id={item.category + '-' + item.id}>
                 <button className="expandable_header expandable_target" tabIndex="0">
                   <span className="expandable_header-left expandable_label">
                       <span className={"expandable_category expandable_category__" + item.category}>
@@ -177,12 +175,10 @@ var TermWithDefinition = React.createClass({
 var Term = React.createClass({
     render: function () {
         var item = this.props.item;
-        var style = this.props.visible ? {} : {display: 'none'};        
         return (
              <div className={"expandable expandable__padded expandable__form-explainer expandable__form-explainer-" + item.category}
                        id={item.category + '-' + item.id}
-                       tabIndex="0"
-                       style={style}>
+                       tabIndex="0">
                     <span className="expandable_header">
                       <span className="expandable_label">
                           <span className={"expandable_category expandable_category__" + item.category}>
@@ -225,11 +221,10 @@ var FormExplainerTerms = React.createClass({
     
     renderTerms: function () {
         return this.props.terms.map(function (item) {
-            var visible = this.props.category === item.category;
             if (item.definition) {
-               return (<TermWithDefinition item={item} visible={visible}/>)
+               return (<TermWithDefinition item={item}/>)
             } else {
-               return (<Term item={item} visible={visible}/>)
+               return (<Term item={item}/>)
             }
         }, this);
     },
