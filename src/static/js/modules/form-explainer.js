@@ -13,10 +13,6 @@ var App = React.createClass({
     },
     
     componentDidUpdate: function () {
-        if (this.state.pageChange) {
-            // 
-            //$('.expandable').expandable();
-        }
     },
     
     fitAndStickToWindow: function () {
@@ -35,16 +31,14 @@ var App = React.createClass({
     
     updateCategory: function (category) {
         this.setState({
-            activeTab: category,
-            pageChange: false
+            activeTab: category
         });
     },
     
     updatePage: function (page) {
         this.setState({
             activePage: page, 
-            pageData: this.props.pages[page - 1],
-            pageChange: true
+            pageData: this.props.pages[page - 1]
         });
     },
     
