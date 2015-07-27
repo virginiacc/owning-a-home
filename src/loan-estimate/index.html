@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set active_page = "form-explainer" %}
+{% set active_page = "loan-estimate" %}
 
 {% block title %}Owning a Home: Loan Estimate Explainer{% endblock title %}
 {% block content %}
@@ -20,16 +20,7 @@
         <img src="../static/img/ill-form-explainer-loan-est.png" alt="" class="illustration">
       </div><!-- /.col-4 -->
 
-      {# Import the form explainer macros #}
-      {% import "form-explainer.html" as form_explainer %}
-      {# Import the data to use with form explainer #}
-      {% from "loan-estimate-1.html" import data as page_1 %}
-      {% from "loan-estimate-2.html" import data as page_2 %}
-      {% from "loan-estimate-3.html" import data as page_3 %}
-      {# Render form explainer with the data for this form #}
-      <div class="col-12">
-        {{ form_explainer.render([ page_1, page_2, page_3 ]) }}
-      </div>
+      <div class="col-12" id="form-explainer"></div>
 
     </div><!-- /.wrapper -->
   </section><!-- /.wrap -->
