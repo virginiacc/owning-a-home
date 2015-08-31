@@ -15,10 +15,22 @@ HOME = 'index.html'
 LC = 'loan-comparison'
 LO = 'loan-options'
 CONV = 'loan-options/conventional-loans'
-RC = 'check-rates'
+ER = 'explore-rates'
 FHA = 'loan-options/FHA-loans'
 SPECIAL = 'loan-options/special-loan-programs'
-
+# Journey links
+KP = 'process'
+PP = 'process/prepare'
+PE = 'process/explore'
+PC = 'process/compare'
+PF = 'process/close'
+PS = 'process/sources'
+# FE
+CD = 'closing-disclosure'
+LE = 'loan-estimate'
+# Form Resources
+MC = 'mortgage-closing'
+ME = 'mortgage-estimate'
 
 @given(u'I navigate to the "{page_name}" page')
 @handle_error
@@ -30,7 +42,7 @@ def step(context, page_name):
     elif (page_name == 'Loan Options'):
         context.base.go(LO)
     elif (page_name == 'Rate Checker'):
-        context.base.go(RC)
+        context.base.go(ER)
         # Wait for the chart to load
         context.base.sleep(2)
         assert_that(context.rate_checker.is_chart_loaded(), equal_to("Chart is loaded"))
@@ -40,6 +52,26 @@ def step(context, page_name):
         context.base.go(FHA)
     elif (page_name == 'Special Loan Programs'):
         context.base.go(SPECIAL)
+    elif (page_name == 'Know the Process'):
+        context.base.go(KP)
+    elif (page_name == 'Prepare to Shop'):
+        context.base.go(PP)
+    elif (page_name == 'Explore Loan Options'):
+        context.base.go(PE)
+    elif (page_name == 'Compare Loan Options'):
+        context.base.go(PC)
+    elif (page_name == 'Get Ready to Close'):
+        context.base.go(PF)
+    elif (page_name == 'Sources'):
+        context.base.go(PS)
+    elif (page_name == 'Closing Disclosure'):
+        context.base.go(CD)
+    elif (page_name == 'Loan Estimate'):
+        context.base.go(LE)
+    elif (page_name == 'Mortgage Closing'):
+        context.base.go(MC)
+    elif (page_name == 'Mortgage Estimate'):
+        context.base.go(ME)
     else:
         raise Exception(page_name + ' is NOT a valid page')
 
@@ -55,7 +87,8 @@ def step(context):
 def step(context, link_name):
     # Click the requested tab
     context.navigation.click_link(link_name)
-    
+
+
 @when(u'I click on the link with id "{link_id}"')
 @handle_error
 def step(context, link_id):
@@ -107,3 +140,8 @@ def step(context, relative_url, page_title):
     title = context.base.switch_to_new_tab(relative_url)
     assert_that(title, contains_string(page_title))
 
+@then(u'Links are working without 404 errors')
+def links_working_without_404s(context):
+    assert_that( context.navigation.check_links_for_404s(context.base_url),
+                equal_to([]),
+                'Broken links on <%s>' % context.base.get_current_url() )

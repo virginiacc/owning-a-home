@@ -42,7 +42,7 @@ Examples:
   | section_name             | link_name                    |
   | Loan term                | Collapse loan terms          |
   | Interest rate type       | Collapse interest rate type  |
-  | Loan type                | Collapse loan type       |
+  | Loan type                | Collapse loan types       |
 
 @smoke_testing @loan_options
 Scenario Outline: Test inbound links in the Loan Options page
@@ -51,10 +51,9 @@ Scenario Outline: Test inbound links in the Loan Options page
       And I should see "<page_title>" displayed in the page title
 
 Examples:
-  | link_name                    | page_title                      | relative_url                              |
-  | Understand loan options      | Loan Options                    | /loan-options/                            |
-  | Closing checklist            | checklist_mortgage_closing.pdf  | /resources/checklist_mortgage_closing.pdf |
-  | Closing forms explainer      | mortgage_closing_forms.pdf      | /resources/mortgage_closing_forms.pdf     |
+  | link_name                    | page_title                                           | relative_url         |
+  | Owning a Home                | Owning a Home > Consumer Financial Protection Bureau | /                    |
+
 
 @smoke_testing @loan_options
 Scenario: Test OAH link in the Loan Options page
@@ -96,9 +95,9 @@ Examples:
   | principal and interest                    | /askcfpb/1941/on-a-mortgage-whats-the-difference-between-my-principal-and-interest-payment-and-my-total-monthly-payment.html |
   | Learn why                                 | /askcfpb/1941/on-a-mortgage-whats-the-difference-between-my-principal-and-interest-payment-and-my-total-monthly-payment.html |
   | Learn more                                | /askcfpb/1965/how-do-mortgage-lenders-calculate-monthly-payments.html                                                        |
-  | Explore rates specific to your situation  | /check-rates/                                                                                                                |
-  | Good Faith Estimates                      | /askcfpb/146/what-is-a-good-faith-estimate-what-is-a-gfe.html                                                                |
-  | Learn more about balloon loans            | /askcfpb/104/what-is-a-balloon-loan.html                                                                                     |
+  | Explore rates for different loan terms  | /explore-rates/                                                                                                                |
+  | Loan Estimates                      |  askcfpb/1995/what-is-a-loan-estimate.html |
+  | Learn more about balloon loans            | /askcfpb/104/what-is-a-balloon-loan.html  |
 
 @loan_options @prod_only @loan_options_expandable
 Scenario Outline: Expand 'Interest rate type' section then click links inside the expanded section
@@ -106,7 +105,7 @@ Scenario Outline: Expand 'Interest rate type' section then click links inside th
     And I click on the "<link_name>" link
   Then I should see the "<relative_url>" URL with page title Consumer Financial Protection Bureau open in a new tab
 
-Examples:   
+Examples:
   | link_name                                   | relative_url                                                                                                                                        |
   | principal and interest payment              | /askcfpb/1941/on-a-mortgage-whats-the-difference-between-my-principal-and-interest-payment-and-my-total-monthly-payment.html                        |
   | increase or decrease based on the market    | /askcfpb/1949/for-an-adjustable-rate-mortgage-arm-what-are-the-index-and-margin-and-how-do-they-work.html                                           |

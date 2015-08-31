@@ -8,6 +8,21 @@ ul.unindent-ul{
   color: @gray-5;
 }
 
+.content__loan-options {
+  &:after {
+    display: none;
+  }
+  .oah-title-tag {
+    margin-top: 0;
+  }
+  .content__1-3 & {
+    .respond-to-min(870px, {
+      border-right-width: 0;
+      border-left-width: 30px;
+    });
+  }
+}
+
 
 // Expandables
 
@@ -107,4 +122,11 @@ ul.unindent-ul{
       color: @gray;
     }
   }
+}
+
+.related-links_container {
+  .respond-to-min(900px, {
+    border-left-width: @grid_gutter-width;
+  });
+  padding-bottom: 0;
 }

@@ -91,11 +91,23 @@ If you already have [Autoenv](https://github.com/kennethreitz/autoenv) installed
 	sheer: error: too few arguments
 	```
 
+7. Populate Elasticsearch with content:
+  ```
+  $ [WORDPRESS=http://wordpress.uri] sheer index [--reindex]
+  ```
+  Make sure to be in the site's root folder and that Elasticsearch is running. The above
+  command will read all OaH content and save it in Elasticseach. [More information](#wordpress-indexing).
+
 If you run into problems or have any questions about Sheer, check out [Sheer on Github](https://github.com/cfpb/sheer) and the [Sheer Issue Tracker](https://github.com/cfpb/sheer/issues).
 
 ### Node, Grunt, Bower, Browserify
 
-1. Install [node.js](http://nodejs.org/) however you'd like.
+1. Install [node.js](http://nodejs.org/), either v0.12 or io.js. If you're using the default version that comes with Mac OSX, you'll need to upgrade - first [install NVM](https://github.com/creationix/nvm).
+1. If you installed with NVM, then you can install and set io.js as your default node version:
+	```
+	$ nvm install iojs
+	$ nvm alias default iojs
+	```
 2. Install [Grunt](http://gruntjs.com/), [Bower](http://bower.io/) and [Browserify](http://browserify.org/):
 	```
 	$ npm install -g grunt-cli bower browserify
@@ -121,14 +133,22 @@ If you run into problems or have any questions about Sheer, check out [Sheer on 
 
 ## Configuration
 
-### WordPress Indexing
+### <a name="wordpress-indexing"></a>WordPress Indexing
 To index your content from WordPress:
 
 1. In the repo directory, copy the `.env_SAMPLE` file and name it `.env`. This can be done from the command line with the following command:
 	```
 	$ cp .evn_SAMPLE .env
 	```
-1. Add your WordPress URL in place of wordpress.domain on line 1 of `.env`.
+
+2. Add your WordPress URL in place of wordpress.domain on line 1 of `.env`.
+
+3. Run the following command inside the `/src/` or `/dist/` folder:
+	```
+	$ cd src
+	$ workon OAH
+	$ sheer index [--reindex]
+  ```
 
 
 ### Rate Checker and Mortgage Insurance

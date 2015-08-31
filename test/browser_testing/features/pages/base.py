@@ -21,6 +21,7 @@ EMAIL = "email"
 
 # ELEMENT ID'S FOR BUTTONS
 
+
 # XPATH LOCATORS
 EMAIL_LBL = "//form[@id='signup']/p"
 SIGNUP = "//button[text()='Sign up']"
@@ -61,7 +62,7 @@ class Base(object):
         for handle in self.driver.window_handles:
             self.driver.switch_to_window(handle)
             # Wait for the URL to display in the address bar
-            WebDriverWait(self.driver, 5)\
+            WebDriverWait(self.driver, 10)\
                 .until(lambda s: len(s.current_url) > 1)
 
             self.logger.info("Current url: %s" % self.driver.current_url)

@@ -2,6 +2,7 @@ var positive = require('stay-positive');
 var cost = require('overall-loan-cost');
 var amortize = require('amortize');
 var humanizeLoanType = require('../humanize-loan-type');
+var common = require('./common');
 
 var TAX_RATE = 0.01;
 var INSURANCE_RATE = 0.005;
@@ -9,7 +10,7 @@ var INSURANCE_RATE = 0.005;
 var mortgage = {};
 
 mortgage['loan-amount'] = function (loan) {
-    return loan['price'] - loan['downpayment'] || 0;
+    return +loan['price'] - +loan['downpayment'] || 0;
 };
 
 mortgage['discount'] = function (loan) {
@@ -45,6 +46,10 @@ mortgage['insurance'] = function (loan) {
     }
     return 0;
 };
+
+mortgage['third-party-fees'] = function (loan) {
+    return loan['third-party-services'] + loan['insurance'];
+}
 
 mortgage['taxes-gov-fees'] = function (loan) {
     return 1000;
@@ -93,10 +98,6 @@ mortgage['monthly-mortgage-insurance'] = function (loan) {
     return 0;
 };
 
-// this has to be calculated after the other calculations that it uses - need to provide default data for these amounts before interest rate changes.
-// OR we need to perform calculations using the default data, not just on change!
-// loan edited should be true when page loads and rates load for first time, but it's not.
-// edited is for user interactions but we want to run the same calculations on page load
 mortgage['monthly-payment'] = function (loan) {        
     return loan['monthly-taxes-insurance']
         + loan['monthly-mortgage-insurance']
@@ -105,7 +106,7 @@ mortgage['monthly-payment'] = function (loan) {
 };
 
 mortgage['closing-costs'] = function (loan) {
-    return loan['downpayment']
+    return +loan['downpayment']
             + loan['discount']
             + loan['processing']
             + loan['third-party-services']
@@ -120,8 +121,8 @@ mortgage['get-cost'] = function (loan) {
         amountBorrowed: positive(loan['loan-amount']),
         rate: loan['interest-rate'],
         totalTerm: loan['loan-term'] * 12,
-        downPayment: loan['downpayment'],
-        closingCosts: loan['closing-costs']
+        downPayment: +loan['downpayment'],
+        closingCosts: +loan['closing-costs'] - +loan['downpayment']
     });
 };
 
@@ -139,9 +140,19 @@ mortgage['overall-costs'] = function (loan) {
 
 mortgage['loan-summary'] = function (loan) {
     if (loan['rate-structure'] === 'arm') {
-        return loan['arm-type'].split('-').join('/') + ' ARM';
+        return (loan['arm-type'] || '').split('-').join('/') + ' ARM';
     } else {
-        return loan['loan-term'] + '-year ' + loan['rate-structure'] + ' ' + humanizeLoanType(loan['loan-type']);
+        var loanType = loan['loan-type'];
+        switch (loanType) {
+            case 'conf':                
+            case 'fha':
+            case 'va': 
+                loanType = humanizeLoanType(loan['loan-type']);
+                break;
+            default:
+                loanType = (common.jumboTypes[loanType] || {}).label;
+        }
+        return loan['loan-term'] + '-year ' + loan['rate-structure'] + ' ' + loanType;
     }
 };
 
