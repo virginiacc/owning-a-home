@@ -3,8 +3,8 @@
 
 {% block title %}Owning a Home{% endblock title %}
 
-{% block content %}
-<main class="content content__2-1 content__bleedbar" id="main" role="main">
+{% block content %}    
+<main class="index content content__2-1 content__bleedbar" id="main" role="main">
 
     <section class="content_hero">
 
@@ -13,7 +13,7 @@
 
       <div class="content-l_col content-l_col-2-3">
           <h1 class="page-title">Owning a Home</h1>
-          <h2>We're here to help you with your home-buying process. Learn what to expect and what questions to ask, and get tools and resources to help you make decisions.</h2>
+          <h2>We're here to help you with buying and financing your home. Learn what to expect and what questions to ask, and get tools and resources to help you make decisions.</h2>
 
         </div>
         <div class="content-l_col content-l_col-1-3 hero-illu-inner">
@@ -55,7 +55,7 @@
                <div class="phase_tools content-l_col content-l_col-1-4 block__sub grid_column__left-divider">
                 <h6 class="block__sub block__flush-top">Key tools</h6>
                 <ul class="list__links list__unstyled list__spaced">
-                  <li class="list_item"><a class="list_link jump-link" href="{{ base_url }}check-rates"><span class="jump-link_text">Explore interest rates</span></a></li>
+                  <li class="list_item"><a class="list_link jump-link" href="{{ base_url }}explore-rates"><span class="jump-link_text">Explore interest rates</span></a></li>
                   <li class="list_item"><a class="list_link jump-link jump-link__download" href="{{ base_url }}resources/monthly_payment_worksheet.pdf"><span class="jump-link_text">Monthly payment worksheet</span>&nbsp;</a></li>
                 </ul>
               </div>
@@ -88,7 +88,7 @@
                 <h6 class="block__sub block__flush-top">Key tools</h6>
                 <ul class="list__links list__unstyled list__spaced">
                   <li class="list_item"><a class="list_link jump-link" href="{{ base_url }}loan-options"><span class="jump-link_text">Understand loan options</span></a></li>
-                  <li class="list_item"><a class="list_link jump-link" href="{{ base_url }}check-rates"><span class="jump-link_text">Explore interest rates</span></a></li>
+                  <li class="list_item"><a class="list_link jump-link" href="{{ base_url }}explore-rates"><span class="jump-link_text">Explore interest rates</span></a></li>
                 </ul>
               </div>
 
@@ -119,7 +119,7 @@
                <div class="phase_tools content-l_col content-l_col-1-4 block__sub grid_column__left-divider">
                 <h6 class="block__sub block__flush-top">Key tools</h6>
                 <ul class="list__links list__unstyled list__spaced">
-                  <li class="list_item"><a class="list_link jump-link" href="{{ base_url }}check-rates"><span class="jump-link_text">Explore interest rates</span></a></li>
+                  <li class="list_item"><a class="list_link jump-link" href="{{ base_url }}explore-rates"><span class="jump-link_text">Explore interest rates</span></a></li>
                   <li class="list_item"><a class="list_link jump-link" href="{{ base_url }}loan-estimate"><span class="jump-link_text">Loan Estimate explainer</span></a></li>
                 </ul>
               </div>
@@ -238,7 +238,7 @@
 
           <ul class="list__unstyled list__spaced">
             <li class="list_item">
-              <span class="jump-link_intro">Lenders</span><br>
+              <span class="jump-link_intro">Mortgage professionals</span><br>
               <a class="list_link jump-link" href="/regulatory-implementation/" target=\"_blank\">
                 <span class="jump-link_text">Get videos, compliance guides, and other resources</span>
               </a>
@@ -261,7 +261,7 @@
 
           <ul class="list__unstyled list__spaced">
             <li class="list_item">
-                <a class="icon-link__no-wrap jump-link jump-link__download" href="/f/201503_cfpb_your-home-loan-toolkit-web.pdf" target=\"_blank\">
+                <a class="jump-link jump-link__download" href="http://www.consumerfinance.gov/f/201503_cfpb_your-home-loan-toolkit-web.pdf" target=\"_blank\">
                   <span class="jump-link_text">Your home loan toolkit: a step-by-step guide</span>
                 </a>
             </li>
@@ -272,12 +272,5 @@
     </div>
 
 </main>
-
-<script type="text/javascript">
-// $(function(){
-  document.getElementById('primary-content').className += ' index';
-// });
-</script>
-
 
 {% endblock %}

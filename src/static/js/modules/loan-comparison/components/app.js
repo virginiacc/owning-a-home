@@ -24,41 +24,41 @@ var App = React.createClass({
         this.init();
         return this.getAppState();
     },
-  
+
     getAppState: function () {
         return {
             loans: LoanStore.getAll(),
             scenario: ScenarioStore.getScenario()
         }
     },
-    
+
     componentDidMount: function() {
         var scenario = this.state.scenario;
-        var animating; 
-        
+        var animating;
+
         LoanStore.addChangeListener(this._onChange);
         // tooltips
         $(this.getDOMNode()).tooltip({
             selector: '[data-toggle="tooltip"]',
-            'placement': 'bottom', 
+            'placement': 'bottom',
             container: 'body',
             title: function getTooltipTitle(){
                 return $(this).attr('title') || $(this).next('.help-text').html() || 'Tooltip information.';
             }
         });
-        $('.expandable').expandable();        
+        $('.expandable').expandable();
 
         // initial positioning of educational notes
         if (scenario) {
             positionNotes();
         }
-        
+
         $(window).resize(debounce(function () {
             if (scenario) {
                 positionNotes(animating);
             }
         }, 100));
-        
+
         // reposition notes on start of expand event
         // and (approximate) completion of expandable animation
         // (could also update cf-expandable to allow callbacks)
@@ -75,35 +75,49 @@ var App = React.createClass({
             }
         });
     },
-  
+
     componentWillUnmount: function() {
         LoanStore.removeChangeListener(this._onChange);
     },
-    
+
     componentDidUpdate: function () {
         if (this.state.scenario) {
             positionNotes();
         }
     },
+    
+    startMobileEditing: function (loanName) {
+        // We use the alphabetical loan name instead of loan id to keep track
+        // of loan being edited for a couple of reasons: 
+        // 1. Testing for existence of 0 as a value is complicated, &
+        // 2. We need to show the name of the loan being edited in the input table section
+        this.setState({
+            editing: loanName
+        });
+    },
+    
+    stopMobileEditing: function (e) {
+        e.preventDefault();
+        this.setState({
+            editing: null
+        });
+    },
 
     render: function() {
         return (
-          <div>            
+          <div>
             <div>
                 <ScenarioSection scenario={this.state.scenario}/>
                 <div className="block block__border-top block__padded-top" id="loans-container">
                     <ScenarioHeader scenario={this.state.scenario}/>
                     <div className="content-l">
-                        <div className="content-l_col content-l_col-3-4">
+                        <div className="content-l_col content-l_col-3-4">                            
+                            
                             <h3><span className="round-step">1</span>Enter details for each scenario</h3>
-                            <LoanOutputTableMobileGroup loans={this.state.loans} scenario={this.state.scenario} />
-                            <div className="lc-inputs" id="loan-input-container">
-                                <a href="#lc-input-0" className="lc-save-link lc-toggle first-save">
-                                    <span className="cf-icon cf-icon-save"></span> 
-                                    Save inputs
-                                </a>
-                                <LoanInputTable loans={this.state.loans} scenario={this.state.scenario}/>
-                            </div>
+                            <LoanOutputTableMobileGroup loans={this.state.loans} editing={this.state.editing} scenario={this.state.scenario} startEditing={this.startMobileEditing}/>
+                            
+                            <LoanInputTable loans={this.state.loans} scenario={this.state.scenario} editing={this.state.editing} stopEditing={this.stopMobileEditing}/>
+                            
                         </div>
                     </div>
                 </div>
@@ -112,7 +126,7 @@ var App = React.createClass({
                 <div className="content-l">
                     <div className="content-l_col content-l_col-3-4 with-link">
                         <h3><span className="round-step">2</span>
-                            Choose <a class="jump-link" href="/check-rates"><span class="jump-link_text">interest rates</span></a> to use in your scenarios</h3>
+                            Choose <a class="jump-link" href="/explore-rates"><span class="jump-link_text">interest rates</span></a> to use in your scenarios</h3>
                         <div className="lc-inputs" id="loan-interest-rate-container">
                             <InterestRateTable loans={this.state.loans} scenario={this.state.scenario}/>
                         </div>
@@ -138,7 +152,7 @@ var App = React.createClass({
           </div>
         );
     },
- 
+
   /**
    * Event handler for 'change' events coming from the Stores
    */

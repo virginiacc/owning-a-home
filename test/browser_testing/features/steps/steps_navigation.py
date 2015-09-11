@@ -15,7 +15,7 @@ HOME = 'index.html'
 LC = 'loan-comparison'
 LO = 'loan-options'
 CONV = 'loan-options/conventional-loans'
-RC = 'check-rates'
+ER = 'explore-rates'
 FHA = 'loan-options/FHA-loans'
 SPECIAL = 'loan-options/special-loan-programs'
 # Journey links
@@ -28,7 +28,9 @@ PS = 'process/sources'
 # FE
 CD = 'closing-disclosure'
 LE = 'loan-estimate'
-
+# Form Resources
+MC = 'mortgage-closing'
+ME = 'mortgage-estimate'
 
 @given(u'I navigate to the "{page_name}" page')
 @handle_error
@@ -40,7 +42,7 @@ def step(context, page_name):
     elif (page_name == 'Loan Options'):
         context.base.go(LO)
     elif (page_name == 'Rate Checker'):
-        context.base.go(RC)
+        context.base.go(ER)
         # Wait for the chart to load
         context.base.sleep(2)
         assert_that(context.rate_checker.is_chart_loaded(), equal_to("Chart is loaded"))
@@ -66,6 +68,10 @@ def step(context, page_name):
         context.base.go(CD)
     elif (page_name == 'Loan Estimate'):
         context.base.go(LE)
+    elif (page_name == 'Mortgage Closing'):
+        context.base.go(MC)
+    elif (page_name == 'Mortgage Estimate'):
+        context.base.go(ME)
     else:
         raise Exception(page_name + ' is NOT a valid page')
 
@@ -133,3 +139,9 @@ def step(context):
 def step(context, relative_url, page_title):
     title = context.base.switch_to_new_tab(relative_url)
     assert_that(title, contains_string(page_title))
+
+@then(u'Links are working without 404 errors')
+def links_working_without_404s(context):
+    assert_that( context.navigation.check_links_for_404s(context.base_url),
+                equal_to([]),
+                'Broken links on <%s>' % context.base.get_current_url() )
