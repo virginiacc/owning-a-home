@@ -264,14 +264,20 @@
 
   img {
       position: relative; 
-      left: 100%; 
-      margin-left: -200%; 
+      left: 50%;
+      transform: translate(-50%,0); 
       width: 540px;
       max-width: 540px;
   }
 }
 
-
-.lt-ie9 .fcm__right {
-  border-left: 1px solid @gray-50;
+.lt-ie9 {
+  // image crop for older browsers
+  .fcm_wrapper img {
+      left: 100%; 
+      margin-left: -200%;
+  }
+  .fcm__right {
+    border-left: 1px solid @gray-50;
+  }
 }
