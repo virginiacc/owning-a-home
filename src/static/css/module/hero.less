@@ -1,38 +1,49 @@
+@tablet-max: 799px;
+
 .hero {
-  background-color: @teal-20;
+  background-color: @block__bg;
   
   &_wrapper {
-    .wrapper();
+    position: relative;
     padding-top: unit(@grid_gutter-width / @base-font-size-px, em);
-    padding-right: unit((@grid_gutter-width / 2) / @base-font-size-px, em);
-    // bottom padding = image height + padding for top/bottom of image
+    // bottom padding = image height at mobile + padding for top/bottom of image
     padding-bottom: unit((195px + @grid_gutter-width * 2) / @base-font-size-px, em); 
-    padding-left: unit((@grid_gutter-width / 2) / @base-font-size-px, em);
-    background-image: url('../img/hero-housekey.png');
-    background-position: center bottom unit(@grid_gutter-width / @base-font-size-px, em);
-    background-repeat: no-repeat;
-    background-size: 350px;
+    
+    &:after {
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top:0;
+      right: 0;
+      content: "";
+      background-position: center bottom unit(@grid_gutter-width / @base-font-size-px, em);
+      background-repeat: no-repeat;
+    }
 
     .respond-to-min(@tablet-min, {
-      padding-left: unit(@grid_gutter-width / @base-font-size-px, em);
-      // right padding = image width + padding for left/right of image
-      padding-right: unit((230px + @grid_gutter-width * 2) / @base-font-size-px, em);
+      // right padding = width of 5 of 12 columns at 800px
+      padding-right: unit(333px / @base-font-size-px, em);
       padding-bottom: unit(@grid_gutter-width / @base-font-size-px, em);
-      background-position: right unit(@grid_gutter-width / @base-font-size-px, em)
-                           top unit(@grid_gutter-width / @base-font-size-px, em);
-      background-size: 230px;
+      
+      &:after {
+        width: 333px;
+        background-position: center;
+      }
     });
 
     .respond-to-min(800px, {
       box-sizing: border-box;
       min-height: 300px;
-      padding-top: unit(40px / @base-font-size-px, em);
-      padding-bottom: unit(40px / @base-font-size-px, em);
-      // right padding = image width + padding for left/right of image
-      padding-right: unit((350px + @grid_gutter-width * 2) / @base-font-size-px, em);
-      padding-left: unit( (@grid_gutter-width * 2) / @base-font-size-px, em);
-      background-position: right unit(@grid_gutter-width / @base-font-size-px, em) center;
-      background-size: 350px;
+      padding-top: unit(40px / @base-font-size-px, em); // approximates 45px visually
+      // right padding = width of 5 of 12 columns at 1140px
+      padding-right: unit(475px / @base-font-size-px, em);
+      padding-bottom: unit(40px / @base-font-size-px, em); // approximates 45px visually
+      
+      &:after {
+        width: 475px;
+        background-position: center;
+      }
     });
     
     .lt-ie9 & {
@@ -40,7 +51,9 @@
       // perhaps due to bug seen here: http://grab.by/JutE
       min-height: 0;
       // Fallback for four-value bg-pos syntax
-      background-position: right center;
+      &:before {
+        background-position: right center;
+      }
     }
   }
   
@@ -66,11 +79,199 @@
     .webfont-regular();
     margin-top: @grid_gutter-width;
     margin-bottom: 0;
+  }
+  
+  // increase top padding to compensate for less text
+  &__small-content &_wrapper {
+    .respond-to-min(800px, {
+      padding-top: unit(55px / @base-font-size-px, em); // approximates 60px visually
+    });
+  }
+  
+  // if the image is wide, position at top and right
+  &__wide-image &_wrapper:after {
+    .respond-to-min(800px, {
+      background-position: top unit(40px / @base-font-size-px, em) right;
+    });
+  }
+}
+
+// customization
+
+.my-hero {
+  background-color: @teal-20;
+  
+  .hero_wrapper {
+    .respond-to-max(@mobile-max, {
+      padding-bottom: unit((195px + @grid_gutter-width * 2) / @base-font-size-px, em); 
+    });
     
-    a& {
-      display: block;
+    &:after {
+      background-image: url('../img/hero-housekey.png');
+      background-size: 350px;
     }
+    
+    .respond-to-min(@tablet-min, {
+      &:after {
+        background-size: 233px;
+      }
+    });
+    
+    .respond-to-min(800px, {
+      &:after {
+        background-size: 350px;
+      }
+    });
+  }
+}
+
+.hero__wide-image {
+  .hero_wrapper {
+    &:after {
+      background-image: url('../img/form-resources_mortgage-closing-hero-large.png');
+    }
+    
+    .respond-to-min(800px, {
+      &:after {
+        background-size: 450px;
+      }
+    });
+  }
+}
+
+// retina image
+// ie8 image -- special size since background-size does not work, or hide retina
+
+
+
+
+.fcm {
+  background-color: @gray-5;
+  border-top: 1px solid @gray-50;
+  border-bottom: 1px solid @gray-50;
+  position: relative;
+  
+  .respond-to-max(@mobile-max, {    
+    margin-right: unit((-@grid_gutter-width / 2) / @base-font-size-px, em);
+    margin-left: unit((-@grid_gutter-width / 2) / @base-font-size-px, em);
+  });
+  
+  .respond-to-min(@tablet-min, {    
+    margin-right: unit(-@grid_gutter-width / @base-font-size-px, em);
+    margin-left: unit(-@grid_gutter-width / @base-font-size-px, em);
+  });
+  
+  .respond-to-min(800px, {
+    box-sizing: border-box;
+    min-height: 270px;
+  });
+  
+  &__left {
+    .respond-to-min(800px, {
+      margin-left: 0;
+      
+      // bleed background off left edge of page
+      &:before {
+        left: -200%;
+        background-color: @gray-5;
+        content: '';
+        display: block;
+        position: absolute;
+        width: 200%;
+        border-top: 1px solid @gray-50;
+        border-bottom: 1px solid @gray-50;
+        top: -1px;
+        bottom: -1px;
+      }
+    });
+  }
+
+  &__right {
+    .respond-to-min(800px, {
+      margin-right: 0;
+      border-right: 1px solid @gray-50;
+      padding-left: unit(@grid_gutter-width / @base-font-size-px, em);
+    });
+  }
+  
+  
+  &_text {
+    padding-top: unit(25px / @base-font-size-px, em); // approximates 30px visually
+    padding-bottom: unit(@grid_gutter-width / @base-font-size-px, em);
+    
+    .respond-to-max(@mobile-max, {    
+      padding-right: unit((@grid_gutter-width /2) / @base-font-size-px, em);
+      padding-left: unit((@grid_gutter-width /2) / @base-font-size-px, em);
+    });
+    
+    .respond-to-range(@tablet-min, @tablet-max, {    
+      padding-left: unit(@grid_gutter-width / @base-font-size-px, em);
+    });
+    
+    .respond-to-min(@tablet-min, {
+      margin-right: unit((@grid_gutter-width /2) / @base-font-size-px, em);
+      width: 303px; // width of 5 of 12 cols at 800px - 30px padding
+      float: left;
+      border-width: 0;
+    });
+    
+    .respond-to-min(800px, {
+      width: 270px; // width of 3 of 12 cols at 1140px - 15px padding
+    });
+    
+  }
+  
+  &_tag {
+    .h4;
+    margin-bottom: unit(18px / @base-font-size-px, em); // approximates 30px visually
+    .respond-to-max(@mobile-max, {
+      .h5;
+    });
+  }
+  
+  &_icon {
+    .respond-to-max(@mobile-max, {
+      display: none;
+    });
+  }
+
+  &_headline {
+    .h2;
+  }
+
+  &_body {
+    margin-bottom: unit(20px / @base-font-size-px, em);
+    .webfont-regular();
+    .respond-to-max(@mobile-max, {
+      .h4;
+    });
+  }
+
+  &_cta {
+    .webfont-regular();
+  }
+
+  &_visual {
+    width: 100%;
+    line-height: 0;
+  }
+  
+  // crops image to center
+  &_wrapper {
+      text-align: center; 
+      overflow: hidden; 
+  }
+
+  img {
+      position: relative; 
+      left: 100%; 
+      margin-left: -200%; 
+      width: 540px;
+      max-width: 540px;
   }
 }
 
 
+.lt-ie9 .fcm__right {
+  border-left: 1px solid @gray-50;
+}
