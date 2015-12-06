@@ -5,7 +5,7 @@ var LoanInputRow = require('./loan-input-table-row');
 var LoanInputTable = React.createClass({
     inputRows: function (rows) {
         return (rows.map(function(prop){
-            return <LoanInputRow prop={prop} loans={this.props.loans} scenario={this.props.scenario}/>;
+            return <LoanInputRow prop={prop} loans={this.props.loans}/>;
         }, this))
     },
     
@@ -36,9 +36,7 @@ var LoanInputTable = React.createClass({
                     <tr className="subhead-row">
                         <th></th>
                         <th className="input-0"><h4>Scenario A</h4></th>
-                        <th className="link"></th>
                         <th className="input-1"><h4>Scenario B</h4></th>
-                        <th></th>
                     </tr>
                     {this.inputRows(['state', 'county', 'credit-score'])}
                 

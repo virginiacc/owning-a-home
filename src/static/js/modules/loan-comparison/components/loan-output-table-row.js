@@ -1,6 +1,5 @@
 var React = require('react');
 var LoanOutputCell = require('./loan-output-table-cell');
-var EducationalNote = require('./educational-note');
 var common = require('../common');
 var Tooltip = require('./tooltip');
 
@@ -13,10 +12,10 @@ var LoanOutputRow = React.createClass({
         var tooltipHtml = common.outputTooltips[this.props.prop]
                           ? <Tooltip text={common.outputTooltips[this.props.prop]}/>
                           : null;
-        var headingType = function (prop, type, label, scenario) {
+        var headingType = function (prop, type, label) {
             if (type === 'primary') {
                 return (
-                    <LoanOutputRowPrimaryHeading prop={prop} label={label} scenario={scenario} />
+                    <LoanOutputRowPrimaryHeading prop={prop} label={label} />
                 );
             } else if (type === 'sub') {
                 return (
@@ -46,22 +45,12 @@ var LoanOutputRow = React.createClass({
         var resultType = this.props.resultType,
             prop = this.props.prop,
             label = this.props.label,
-            scenario = this.props.scenario,
-            className = this.displayClassNames(resultType),
-            note,
-            noteHtml;
-                    
-        if (scenario) {
-            note = (this.props.scenario.outputNotes || {})[prop];
-            noteHtml = note ? (<EducationalNote label={label} note={note} type="output"/>) : null;
-            className += note ? ' highlight' : '';
-        }
+            className = this.displayClassNames(resultType);
         
         return (
             <tr className={className}>
-                {headingType(prop, resultType, label, scenario)}
+                {headingType(prop, resultType, label)}
                 {loans}
-                <td className="educational-note">{noteHtml}</td>
             </tr>
         );
     }
@@ -81,11 +70,7 @@ var LoanOutputRowPrimaryHeading = React.createClass({
     },
     render: function() {
         var prop = this.props.prop,
-            notes = (this.props.scenario || {}).outputNotes,
-            educationalNote = (notes  || {})[prop],
             className = 'lc-primary-result-heading';
-
-        className += educationalNote ? ' highlight' : '';
 
         return (
             <th scope="row" className={className}>

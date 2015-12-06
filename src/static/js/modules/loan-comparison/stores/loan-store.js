@@ -6,8 +6,6 @@ var jumbo = require('jumbo-mortgage');
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var LoanConstants = require('../constants/loan-constants');
-var ScenarioConstants = require('../constants/scenario-constants');
-var ScenarioStore = require('./scenario-store');
 var mortgageCalculations = require('../mortgage-calculations');
 var common = require('../common');
 var api = require('../api');
@@ -26,18 +24,16 @@ var LoanStore = assign({}, EventEmitter.prototype, {
     
     /**
      * Reset all loans.
-     * On app start or when a new scenario has been entered,
+     * On app start,
      * create/update loans & update downpayment mode.
      *
      */
     resetAllLoans: function () {
         var len = this._loans.length || common.loanCount;
-        var scenario = ScenarioStore.getScenario();
-              
-        if (this._loans.length == 0 || scenario) {
-            this.updateDownpaymentConstant(scenario);
+                      
+        if (this._loans.length == 0) {
             for (i = 0; i < len; i++) {
-                this._loans[i] = this.resetLoan(i, this._loans[i], scenario);
+                this._loans[i] = this.resetLoan(i, this._loans[i]);
             }
         }    
     },
@@ -49,11 +45,10 @@ var LoanStore = assign({}, EventEmitter.prototype, {
      *
      * @param  {number} id 
      * @param  {object} loan 
-     * @param  {object} scenario optional
      * @return  {object} loan
      */
-     resetLoan: function (id, loan, scenario) {
-         loan = LoanStore.setupLoanData(id, loan || {}, scenario);
+     resetLoan: function (id, loan) {
+         loan = LoanStore.setupLoanData(id, loan || {});
          LoanStore.setLoanName(loan);
          
          // ensure downpayment percent because default data only has downpayment
@@ -80,25 +75,18 @@ var LoanStore = assign({}, EventEmitter.prototype, {
       },
     
     /**
-     * Sets up a loan object using a combination of default loan data,
-     * existing loan data, and data specific to the current scenario.
-     * If there's a scenario, loans will have the same values for 
-     * all properties except scenario-specific ones, so we use the 
-     * first loan's data as existingData for loan 2+ (omitting id & api requests)
+     * Sets up a loan object using a combination of default loan data &
+     * existing loan data.
      *
      * @param  {number} id 
      * @param  {object} loan 
-     * @param  {object} scenario optional
      * @return  {object} loan
      */
-    setupLoanData: function (id, loan, scenario) {
+    setupLoanData: function (id, loan) {
         var defaultData = common.defaultLoanData;
-        var scenarioData = scenario ? scenario.loanProps[id] : {};        
-        var existingData = scenario && id > 0 
-                           ? common.omit(this._loans[0], 'id', 'name', 'rate-request', 'mtg-ins-request', 'county-request')
-                           : loan;
+        var existingData = loan;
         
-        return assign({id: id}, defaultData, existingData, scenarioData);
+        return assign({id: id}, defaultData, existingData);
     },
     
     /**
@@ -143,19 +131,6 @@ var LoanStore = assign({}, EventEmitter.prototype, {
     },
     
     
-    /**
-     * Downpayment scenario always needs to start with
-     * downpayment-percent as constant.
-     * (There may be need to change the constant for future
-     * scenarios as well.)
-     * @param  {string} prop loan prop to update
-     * @param  {string|number} val value
-     */
-    updateDownpaymentConstant: function (scenario) {
-        if ((scenario ||{}).val === 'downpayment') {
-            this.downpaymentConstant = 'downpayment-percent';
-        }
-    },
     
     /**
      * Called when price or one of the downpayment values changes.
@@ -624,17 +599,6 @@ var LoanStore = assign({}, EventEmitter.prototype, {
             //}
         }
     },
-
-    /**
-     * Checks whether a loan property is linked in current scenario.
-     * 
-     * @param  {string} prop
-     * @return {bool} 
-     */
-    isPropLinked: function (prop) {
-        var scenario = ScenarioStore.getScenario();
-        return (scenario && $.inArray(prop, scenario.independentInputs) === -1);
-    },
     
     /**
     * Get the entire collection of loans.
@@ -668,13 +632,7 @@ LoanStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.actionType) {
 
         case LoanConstants.UPDATE_LOAN:
-            // update both loans or single loan, dep. on whether the prop changed
-            // is independent or linked in the current scenario
-            if (LoanStore.isPropLinked(action.prop)) {
-                LoanStore.updateAllLoans(action.prop, action.val);
-            } else {
-               LoanStore.updateLoan(LoanStore._loans[action.id], action.prop, action.val);
-            }
+            LoanStore.updateLoan(LoanStore._loans[action.id], action.prop, action.val);
             LoanStore.emitChange();
             break;
         
@@ -693,12 +651,6 @@ LoanStore.dispatchToken = AppDispatcher.register(function(action) {
                 if (i === id || loan.edited)
                 LoanStore.fetchLoanData(loan);
             }
-            LoanStore.emitChange();
-            break;
-        
-        case ScenarioConstants.UPDATE_SCENARIO:
-            AppDispatcher.waitFor([ScenarioStore.dispatchToken]);
-            LoanStore.resetAllLoans();
             LoanStore.emitChange();
             break;
         

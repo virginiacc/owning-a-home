@@ -121,10 +121,10 @@ var LoanInputTableCell = React.createClass({
     coreProps: function (loan, prop) {
         // core props differ dep. on whether component is a simple input,
         // which just needs a value, or an output/custom component,
-        // which needs the loan/prop/scenario
+        // which needs the loan/prop
         var outputOrCustomComponents = ['downpayment', 'interest-rate', 'loan-amount', 'loan-summary'];
         var props = $.inArray(prop, outputOrCustomComponents) !== -1 
-                    ? {loan: loan, prop: prop, scenario: this.props.scenario}
+                    ? {loan: loan, prop: prop}
                     : {value: loan[prop]};
         return props;
     },

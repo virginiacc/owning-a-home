@@ -3,7 +3,6 @@ var React = require('react');
 var common = require('../common');
 var LoanInputCell = require('./loan-input-table-cell');
 var Tooltip = require('./tooltip');
-var EducationalNote = require('./educational-note');
 
 var outputs = ['loan-amount', 'loan-summary'];
 
@@ -11,14 +10,11 @@ var outputs = ['loan-amount', 'loan-summary'];
 var LoanInputRow = React.createClass({
     propTypes: {
         prop: React.PropTypes.string.isRequired,
-        loans: React.PropTypes.array.isRequired,
-        scenario: React.PropTypes.object // or null
+        loans: React.PropTypes.array.isRequired
     },
     
-    generateClassName: function (rowType, outputRow) {
-        // shows 'linked' or 'independent' state of row's prop in UI
-        var className = rowType + ' ' +  this.props.prop + '-row';
-        
+    generateClassName: function (outputRow) {
+      var className = '';
         // adds extra top padding to labels on rows with inputs
         if ($.inArray(this.props.prop, outputs.concat(['points'])) < 0) {
             className += ' padded-row';
@@ -38,58 +34,32 @@ var LoanInputRow = React.createClass({
         return className;
     },
     
-    generateCells: function (rowType, outputRow) {
+    generateCells: function (outputRow) {
         var loans = this.props.loans;
         var cells = [];
         
         for (var i=0; i< loans.length; i++) {
-            
-            // add a component cell for each loan
             var componentCell = (
-                <LoanInputCell prop={this.props.prop} loan={loans[i]} scenario={this.props.scenario} rowType={rowType}/>
+                <LoanInputCell prop={this.props.prop} loan={loans[i]}/>
             );
             cells.push(componentCell);
-            
-            // add a link cell after 1st loan cell
-            // output rows don't need to display the icon
-            if (i === 0) {
-                cells.push(
-                    <td className="link">
-                        <span className={outputRow ? "" : "cf-icon cf-icon-link"}></span>
-                    </td>
-                );
-            }
         }
         
         return cells;
     },
     
     render: function () {
-        var note,
-            noteHtml,
-            rowType,
-            prop = this.props.prop,
-            scenario = this.props.scenario,
+        var prop = this.props.prop,
             label = common.getPropLabel(prop),
             outputRow = $.inArray(prop, outputs) >= 0;
         
-        if (scenario) {
-            // If there's a scenario, an educational note will be associated with all the
-            // independent inputs. Get the note for this row's prop, if one exists, & use
-            // the note's existence to determine a type, linked or independent, for the row.
-            note = (scenario.inputNotes || {})[prop];
-            noteHtml = note ? (<EducationalNote label={label} note={note} type='input'/>) : null;
-            rowType = note ? 'highlight' : 'linked';
-        }
-        
         return (
-            <tr className={this.generateClassName(rowType, outputRow)}>
+            <tr className={this.generateClassName(outputRow)}>
                 <td className="label-cell">
                     <div className="label-text" dangerouslySetInnerHTML={{__html: label}}></div>
                     <Tooltip text={common.inputTooltips[prop]}/>
                 </td>
-                {this.generateCells(rowType, outputRow)}
-                <td className="educational-note">{noteHtml}</td>
+                {this.generateCells(outputRow)}
             </tr>
         );
     }

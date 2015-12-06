@@ -1,5 +1,4 @@
 var React = require('react');
-var ScenarioPicker = require('./scenario-picker');
 
 var NextSteps = React.createClass({
     print: function () {
@@ -22,8 +21,7 @@ var NextSteps = React.createClass({
                                 </a>
                             </div>
                             <div className="step-block">
-                                <h3 className="h4">Explore another scenario</h3>
-                                <ScenarioPicker scenario={this.props.scenario} scrollTo="loans-container"/>
+                                
                             </div>
                             <div className="step-block">
                                 <h3 className="h4">Learn more about the mortgage process</h3>
