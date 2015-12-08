@@ -37,7 +37,6 @@ var LoanInputTableCell = React.createClass({
     },
     
     handleChange: function (loanId, prop, val) {
-      console.log(prop)
         LoanActions.update(loanId, prop, val);
     },
     
