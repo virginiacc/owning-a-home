@@ -1,8 +1,8 @@
 var React = require('react');
-var common = require('../common');
-var LoanOutputRow = require('./loan-output-table-row');
-var LoanOutput = require('./loan-output');
-var InterestRateInput = require('./loan-input-interest-rate');
+var common = require('../../common');
+var LoanOutputRow = require('./loan-output-table-row.jsx');
+var LoanOutput = require('../loan-output.jsx');
+var InterestRateInput = require('../input-table/input-interest-rate.jsx');
 
 
 var LoanOutputTableMobileGroup = React.createClass({

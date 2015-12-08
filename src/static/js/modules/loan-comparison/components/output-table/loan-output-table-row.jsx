@@ -1,7 +1,7 @@
 var React = require('react');
-var LoanOutputCell = require('./loan-output-table-cell');
-var common = require('../common');
-var Tooltip = require('./tooltip');
+var LoanOutputCell = require('./loan-output-table-cell.jsx');
+var common = require('../../common');
+var Tooltip = require('../tooltip.jsx');
 
 var LoanOutputRow = React.createClass({
     displayClassNames: function(type) {

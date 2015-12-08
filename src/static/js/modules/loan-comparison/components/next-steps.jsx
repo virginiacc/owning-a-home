@@ -1,10 +1,8 @@
 var React = require('react');
+var PrintButton = require('../../react-components/print-button.jsx');
 
 var NextSteps = React.createClass({
-    print: function () {
-        window.focus();
-        window.print();
-    },
+    
     render: function () {
         return (
             <div className="next-steps-container">
@@ -16,9 +14,7 @@ var NextSteps = React.createClass({
                                 <p className="short-desc">
                                     Print this worksheet for extra information and tips that can help you make informed decisions when choosing a mortgage loan. This resource is great to have handy when you discuss your budget with your spouse, visit your lender, or figure your way around the mortgage process.
                                 </p>
-                                <a className="btn btn-primary" onClick={this.print}>
-                                   Print
-                                </a>
+                                <PrintButton/>
                             </div>
                             <div className="step-block">
                                 

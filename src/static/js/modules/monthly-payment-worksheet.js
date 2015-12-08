@@ -20,11 +20,6 @@ var MonthlyPaymentWorksheet = React.createClass({
         this.setState({worksheet: worksheet});
     },
     
-    print: function () {
-        window.focus();
-        window.print();
-    },
-    
     scrollUp: function (e) {
         e.preventDefault();
         $.scrollTo( $('#estimate-section'), {
@@ -555,9 +550,7 @@ var MonthlyPaymentWorksheet = React.createClass({
                 <div className="content-l">
                   <div className="content-l_col content-l_col-1-2">
                     <p>Finished filling out the worksheet? Be sure to print your work or save it as a PDF before navigating to a different page.</p>
-                    <button className="btn btn__primary" onClick={this.print}>
-                      Print or save as PDF
-                    </button>
+                    <PrintButton>Print or save as PDF</PrintButton>
                   </div>
                 </div>
               </div>

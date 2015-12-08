@@ -19,36 +19,33 @@ var LoanStore = assign({}, EventEmitter.prototype, {
     downpaymentConstant: 'downpayment-percent',
     
     init: function() {
-        this.resetAllLoans();
+        this.setupAllLoans();
     },
     
     /**
-     * Reset all loans.
+     * Set up all loans.
      * On app start,
      * create/update loans & update downpayment mode.
      *
      */
-    resetAllLoans: function () {
+    setupAllLoans: function () {
         var len = this._loans.length || common.loanCount;
-                      
-        if (this._loans.length == 0) {
-            for (i = 0; i < len; i++) {
-                this._loans[i] = this.resetLoan(i, this._loans[i]);
-            }
-        }    
+        
+        for (i = 0; i < len; i++) {
+            this._loans[i] = this.setupLoan(i);
+        }
     },
     
     /**
-     * Resets a loan's properties.
+     * Sets up a loan's properties.
      * Also runs methods to update dependencies/validations/calculations,
      * and initiates api requests.
      *
      * @param  {number} id 
-     * @param  {object} loan 
      * @return  {object} loan
      */
-     resetLoan: function (id, loan) {
-         loan = LoanStore.setupLoanData(id, loan || {});
+     setupLoan: function (id) {
+         var loan = LoanStore.setupLoanData(id);
          LoanStore.setLoanName(loan);
          
          // ensure downpayment percent because default data only has downpayment
@@ -64,6 +61,16 @@ var LoanStore = assign({}, EventEmitter.prototype, {
          return loan;
      },
      
+     /**
+      * Sets up a loan object using a combination of default loan data &
+      * existing loan data.
+      *
+      * @param  {number} id 
+      * @return  {object} loan
+      */
+     setupLoanData: function (id) {        
+         return assign({id: id}, common.defaultLoanData);
+     },
      
      /**
       * Gets letter of alphabet that corresponds with loan index
@@ -75,33 +82,7 @@ var LoanStore = assign({}, EventEmitter.prototype, {
       },
     
     /**
-     * Sets up a loan object using a combination of default loan data &
-     * existing loan data.
-     *
-     * @param  {number} id 
-     * @param  {object} loan 
-     * @return  {object} loan
-     */
-    setupLoanData: function (id, loan) {
-        var defaultData = common.defaultLoanData;
-        var existingData = loan;
-        
-        return assign({id: id}, defaultData, existingData);
-    },
-    
-    /**
-     * Update all loans.
-     * @param  {string} prop loan prop to update
-     * @param  {string|number} val value
-     */
-    updateAllLoans: function (prop, val) {
-        for (i = 0; i < this._loans.length; i++) {
-            this.updateLoan(this._loans[i], prop, val);
-        }
-    },
-    
-    /**
-     * Updates a property on the loan with value that has been standardized.
+     * Updates a property on the loan.
      * Also updates dependencies & calculated properties.
      * If the changed property is not 'interest-rate', validates the loan.
      * If the changed prop is not 'interest-rate' or 'county', fetches loan data.
@@ -407,7 +388,6 @@ var LoanStore = assign({}, EventEmitter.prototype, {
                 loan['errors'][prop] = err;
             }
         });
-        
         this.jumboCheck(loan);
     },
 
@@ -633,11 +613,6 @@ LoanStore.dispatchToken = AppDispatcher.register(function(action) {
 
         case LoanConstants.UPDATE_LOAN:
             LoanStore.updateLoan(LoanStore._loans[action.id], action.prop, action.val);
-            LoanStore.emitChange();
-            break;
-        
-        case LoanConstants.UPDATE_ALL:
-            LoanStore.updateAllLoans(action.prop, action.val);
             LoanStore.emitChange();
             break;
             

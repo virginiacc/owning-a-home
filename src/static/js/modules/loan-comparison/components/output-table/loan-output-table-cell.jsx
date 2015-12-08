@@ -1,6 +1,6 @@
 var React = require('react');
-var common = require('../common');
-var LoanOutput = require('./loan-output');
+var common = require('../../common');
+var LoanOutput = require('../loan-output.jsx');
 
 var LoanOutputCell = React.createClass({
     displayClassNames: function(loan, prop, type) {

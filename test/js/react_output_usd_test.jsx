@@ -51,17 +51,17 @@ describe('OutputUSD component tests', function () {
   describe('decimalPlaces prop test', function() {
 
     it('should show decimal places accordingly if decimalPlaces optional prop is passed in', function() {
-      setupComponent({value: '2.23', decimalPlaces: 2})
+      setupComponent({value: '2.23', config:{decimalPlaces: 2}})
       expect(componentEl.getDOMNode().textContent).to.equal('$2.23');
     });
 
     it('should show no decimal places when value is 0', function() {
-      setupComponent({value: '0', decimalPlaces: 2})
+      setupComponent({value: '0', config: {decimalPlaces: 2}})
       expect(componentEl.getDOMNode().textContent).to.equal('$0');
     });
 
     it('should show no decimal places when value is converted to 0', function() {
-      setupComponent({value: 'asdf', decimalPlaces: 2})
+      setupComponent({value: 'asdf', config: {decimalPlaces: 2}})
       expect(componentEl.getDOMNode().textContent).to.equal('$0');
     });
 

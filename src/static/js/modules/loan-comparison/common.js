@@ -236,9 +236,7 @@ common.options = {
         {val: 'conf', label: 'Conventional'},
         {val: 'fha', label: 'FHA'},
         {val: 'va', label: 'VA'}
-    ],
-    'interest-rate': 'rates',
-    'county': 'counties'
+    ]
 }
 
 common.jumboTypes = {

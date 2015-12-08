@@ -1,6 +1,6 @@
 var React = require('react');
-var common = require('../common');
-var LoanInputRow = require('./loan-input-table-row');
+var common = require('../../common');
+var LoanInputRow = require('./loan-input-table-row.jsx');
 
 var LoanInputTable = React.createClass({
     inputRows: function (rows) {
@@ -10,7 +10,8 @@ var LoanInputTable = React.createClass({
     },
     
     render: function() { 
-        var className = "lc-inputs", headerText;
+        var className = "lc-inputs", 
+            headerText;
 
         // if editing a loan, add classes so the inputs will show on mobile
         if (this.props.editing) {

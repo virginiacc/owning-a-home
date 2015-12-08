@@ -1,8 +1,8 @@
 var React = require('react');
-var common = require('../common');
-var LoanOutput = require('./loan-output');
-var LoanOutputRow = require('./loan-output-table-row');
-var OutputAlert = require('./output-alert');
+var common = require('../../common');
+var LoanOutput = require('../loan-output.jsx');
+var LoanOutputRow = require('./loan-output-table-row.jsx');
+var LoadingAlert = require('../../../react-components/loading-alert.jsx');
 
 var resultsTables = {
     'closing-costs': ['downpayment','lender-fees','discount','processing','third-party-fees','third-party-services','insurance','taxes-gov-fees','prepaid-expenses','initial-escrow'],
@@ -36,7 +36,7 @@ var LoanOutputTableGroup = React.createClass({
         var msg;
         if (this.isLoading()) {
             loading = "loading";
-            msg = <OutputAlert />;
+            msg = <LoadingAlert className={'output-alert'} msg={'We are loading your costs.'}/>;
         }
 
 
@@ -101,9 +101,6 @@ var LoanOutputTableHead = React.createClass({
         return (
             <tr>
                 <LoanOutputRow prop={this.props.prop} loans={this.props.loans} label={this.props.label} resultType='primary' />
-                <td className="callout-educational">
-                    Educational callout
-                </td>
             </tr>
         )
     }

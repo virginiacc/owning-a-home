@@ -31,52 +31,41 @@ describe('Loan store tests', function() {
     });
 
     describe('init', function() {
-        it('should reset all loans to the default values when init', function() {
-            var initStub = sinon.stub(loanStore, 'resetAllLoans');
+        it('should setup all loans to the default values when init', function() {
+            var initStub = sinon.stub(loanStore, 'setupAllLoans');
             loanStore.init();
-            sinon.assert.calledOnce(loanStore.resetAllLoans);
-            loanStore.resetAllLoans.restore();
+            sinon.assert.calledOnce(loanStore.setupAllLoans);
+            loanStore.setupAllLoans.restore();
         });
     });
 
-    describe('reset all loans', function() {
-        var getScenarioStub, resetLoanStub, origLoans, loan;
+    describe('setup all loans', function() {
+        var getScenarioStub, setupLoanStub, origLoans, loan;
 
         beforeEach(function () {
-            resetLoanStub = sandbox.stub(loanStore, 'resetLoan');
+            setupLoanStub = sandbox.stub(loanStore, 'setupLoan');
             origLoans = loanStore._loans;
             loan = {'loan': 'value'};
-            resetLoanStub.returns(loan);
+            setupLoanStub.returns(loan);
         });
 
         afterEach(function () {
             loanStore._loans = origLoans;
         });
 
-        it('should initialize two loan scenarios to their default values when there are currently no loans in the store', function() {
+        it('should initialize two loan scenarios to their default values', function() {
             loanStore._loans = []; // So this will use common.loanCount = 2
 
-            loanStore.resetAllLoans();
+            loanStore.setupAllLoans();
 
-            sinon.assert.calledTwice(loanStore.resetLoan);
+            sinon.assert.calledTwice(loanStore.setupLoan);
             expect(loanStore._loans).to.deep.equal([loan, loan])
-        });
-
-        it('should reset loan to its default value when there is one loan in the store', function() {
-            loanStore._loans = [{}]; // So this will not use common.loanCount = 2
-
-            getScenarioStub.returns({'downpayment': 'test'});
-            loanStore.resetAllLoans();
-
-            sinon.assert.calledOnce(loanStore.resetLoan);
-            expect(loanStore._loans).to.deep.equal([loan])
-
         });
 
     });
 
-    describe('reset loan', function() {
-        it('should reset loan without downpayment-percent value', function() {
+    describe('setup loan', function() {
+        it('should setup loan without downpayment-percent value', function() {
             var id = 1;
             var loan = {'loan': 'value'};
 
@@ -87,10 +76,10 @@ describe('Loan store tests', function() {
             sandbox.stub(loanStore, 'fetchLoanData');
             sandbox.stub(loanStore, 'fetchCounties');
 
-            loanStore.resetLoan(id, loan);
+            loanStore.setupLoan(id);
 
             sinon.assert.calledOnce(loanStore['setupLoanData']);
-            sinon.assert.calledWith(loanStore['setupLoanData'], id, loan);
+            sinon.assert.calledWith(loanStore['setupLoanData'], id);
             sinon.assert.calledOnce(loanStore['setLoanName']);
             sinon.assert.calledWith(loanStore['setLoanName'], loan);
             sinon.assert.calledTwice(loanStore['updateCalculatedValues']);
@@ -104,7 +93,7 @@ describe('Loan store tests', function() {
             sinon.assert.calledWith(loanStore['fetchCounties'], loan, true);
         });
 
-        it('should reset loan with an empty loan', function() {
+        it('should setup loan with an empty loan', function() {
             var id = 1;
             var loan = {'loan': 'value'};
 
@@ -114,10 +103,10 @@ describe('Loan store tests', function() {
             sandbox.stub(loanStore, 'fetchLoanData');
             sandbox.stub(loanStore, 'fetchCounties');
 
-            loanStore.resetLoan(id, null);
+            loanStore.setupLoan(id);
 
             sinon.assert.calledOnce(loanStore['setupLoanData']);
-            sinon.assert.calledWith(loanStore['setupLoanData'], id, {});
+            sinon.assert.calledWith(loanStore['setupLoanData'], id);
             sinon.assert.calledTwice(loanStore['updateCalculatedValues']);
             sinon.assert.calledWith(loanStore['updateCalculatedValues'], loan, 'downpayment-percent');
             sinon.assert.calledWith(loanStore['updateCalculatedValues'], loan, ['loan-amount', 'loan-summary']);
@@ -129,7 +118,7 @@ describe('Loan store tests', function() {
             sinon.assert.calledWith(loanStore['fetchCounties'], loan, true);
         });
 
-        it('should reset loan with downpayment-percent value', function() {
+        it('should setup loan with downpayment-percent value', function() {
             var id = 1;
             var loan = {'loan': 'value', 'downpayment-percent': 'value'};
 
@@ -140,10 +129,10 @@ describe('Loan store tests', function() {
             sandbox.stub(loanStore, 'fetchLoanData');
             sandbox.stub(loanStore, 'fetchCounties');
 
-            loanStore.resetLoan(id, loan);
+            loanStore.setupLoan(id, loan);
 
             sinon.assert.calledOnce(loanStore['setupLoanData']);
-            sinon.assert.calledWith(loanStore['setupLoanData'], id, loan);
+            sinon.assert.calledWith(loanStore['setupLoanData'], id);
             sinon.assert.calledOnce(loanStore['setLoanName']);
             sinon.assert.calledWith(loanStore['setLoanName'], loan);
             sinon.assert.calledOnce(loanStore['updateCalculatedValues']);
@@ -167,18 +156,6 @@ describe('Loan store tests', function() {
             
             loanStore.setLoanName(loanB);
             expect(loanB.name).to.equal('b');
-        });
-    });
-    
-    
-    describe('update all loans', function() {
-        it('should iterate through all loans and update them based on their inputs', function() {
-            var updateLoanStub = sandbox.stub(loanStore, 'updateLoan');
-            var origLoans = loanStore._loans;
-            loanStore._loans = [{}, {}, {}];
-            loanStore.updateAllLoans("test", 4);
-            sinon.assert.calledThrice(loanStore.updateLoan);
-            loanStore._loans = origLoans;
         });
     });
 

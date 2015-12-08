@@ -1,28 +1,34 @@
 var React = require('react');
-var LoanActions = require('../actions/loan-actions');
-var StyledSelect = require('./styled-select');
+var LoanActions = require('../../actions/loan-actions');
+var StyledSelect = require('../../../react-components/styled-select.jsx');
 
 var InterestRateInput = React.createClass({
-    disableRates: function (option) {
-        //return (this.props.scenario && this.props.loan['interest-rate'] != option.val);
-        //disabledItemCheck={this.disableRates}
+    propTypes: {
+        value: React.PropTypes.oneOfType([
+            React.PropTypes.string,
+            React.PropTypes.number
+        ]),
+        loan: React.PropTypes.object
     },
     fetchRates: function () {
         LoanActions.fetchRates(this.props.loan.id);
     },
-    setClass: function () {
+    
+    generateClassName: function () {
         var className = 'interest-rate-container';
         if (this.props.loan['rate-request']) {
             className += ' updating';
         }
         return className;
     },
+    
     render: function() {
+        var {loan, ...props} = this.props;
+        props.items = loan['rates'];
+        
         return (
-            <div className={this.setClass()}>
-                <StyledSelect value={this.props.loan[this.props.prop]} 
-                              items={this.props.items}
-                              onChange={this.props.onChange}/>
+            <div className={this.generateClassName()}>
+                <StyledSelect {...props}/>
                 <div className='btn btn__disabled interest-rate-loading'></div>
             </div>
         );

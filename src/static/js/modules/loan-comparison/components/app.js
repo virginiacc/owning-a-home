@@ -1,13 +1,16 @@
+var $ = jQuery = require('jquery');
+require('jquery-easing');
+require('cf-expandables');
+require('tooltips');
+
 var React = require('react');
 var LoanStore = require('../stores/loan-store');
-var LoanInputTable = require('./loan-input-table');
-var InterestRateTable = require('./interest-rate-table');
-var LoanOutputTableGroup = require('./loan-output-table');
-var LoanOutputTableMobileGroup = require('./loan-output-table-mobile');
-var NextSteps = require('./next-steps');
+var LoanInputTable = require('./input-table/loan-input-table.jsx');
+var InterestRateTable = require('./input-table/interest-rate-table.jsx');
+var LoanOutputTableGroup = require('./output-table/loan-output-table.jsx');
+var LoanOutputTableMobileGroup = require('./output-table/loan-output-table-mobile.jsx');
+var NextSteps = require('./next-steps.jsx');
 
-var $ = jQuery = require('jquery');
-require('tooltips');
 
 var App = React.createClass({
     init: function () {
@@ -27,7 +30,8 @@ var App = React.createClass({
 
     componentDidMount: function() {
         LoanStore.addChangeListener(this._onChange);
-        // tooltips
+        
+        // activate tooltips
         $(this.getDOMNode()).tooltip({
             selector: '[data-toggle="tooltip"]',
             'placement': 'bottom',
@@ -36,6 +40,8 @@ var App = React.createClass({
                 return $(this).attr('title') || $(this).next('.help-text').html() || 'Tooltip information.';
             }
         });
+        
+        // activate expandables
         $('.expandable').expandable();
     },
 
