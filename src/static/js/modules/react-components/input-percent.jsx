@@ -1,9 +1,9 @@
 var React = require('react');
-var FormattedNumericInput = require('./formatted-numeric-input.jsx');
+var NumericInput = require('./numeric-input.jsx');
 
 /**
 * InputPercentage.
-* Returns FormattedNumericInput, passing it a formatter that
+* Returns NumericInput, passing it a formatter that
 * adds a percentage sign to the end of content.
 *
 */
@@ -22,7 +22,7 @@ var InputPercentage = React.createClass({
 
   render: function () {
     return (
-      <FormattedNumericInput {...this.props} formatter={this.format} />
+      <NumericInput {...this.props} formatter={this.format} />
     );
   }
 });

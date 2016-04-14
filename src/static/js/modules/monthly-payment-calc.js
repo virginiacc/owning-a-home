@@ -1,54 +1,57 @@
+function cleanNumber (num) {
+  num = num ? num.toString().replace(/,/g,'') : '';
+  return parseFloat(num) || 0;
+}
+
+function sum (arr) {
+  var result = 0;
+  for (var i = 0; i < arr.length; i++) {
+    result += cleanNumber(arr[i]);
+  }
+  return result || '';
+}
+
 var monthly = {};
 
 monthly.preTaxIncomeTotal = function (data) {
-  return parseFloat(data.preTaxIncome || 0) + parseFloat(data.preTaxIncomeCB || 0);
+  return sum([data.preTaxIncome, data.preTaxIncomeCB]);
 }
 
 monthly.takeHomeIncomeTotal = function (data) {
-  return parseFloat(data.takeHomeIncome || 0) + parseFloat(data.takeHomeIncomeCB || 0);
+  return sum([data.takeHomeIncome, data.takeHomeIncomeCB]);
 }
 
 monthly.spendingAndSavings = function (data) {
-  var sum = parseFloat(data.rent || 0) 
-          + parseFloat(data.utilities || 0)
-          + parseFloat(data.debtPayments || 0)
-          + parseFloat(data.livingExpenses || 0)
-          + parseFloat(data.savings || 0);
-          
-  return sum;
+  return sum([data.rent, data.utilities, data.debtPayments, data.livingExpenses, data.savings]);
 }
 
 monthly.homeMaintenanceAndImprovement = function (data) {
-  return parseFloat(data.homeImprovement || 0) + parseFloat(data.homeMaintenance || 0);
+  return sum([data.homeImprovement, data.homeMaintenance]);
 }
 
 monthly.newHomeownershipExpenses = function (data) {
-  return parseFloat(data.condoHOA || 0) + monthly.homeMaintenanceAndImprovement(data);
+  return sum([data.condoHOA, data.homeImprovement, data.homeMaintenance]);
 }
 
 monthly.futureSavings = function (data) {
-  return parseFloat(data.emergencySavings || 0) + parseFloat(data.longTermSavings || 0);
+  return sum([data.emergencySavings, data.longTermSavings]);
 }
 
 monthly.availableHousingFunds = function (data) {
-  var income = monthly.takeHomeIncomeTotal(data);
-  var expenses = parseFloat(data.debtPayments || 0)
-               + parseFloat(data.livingExpenses || 0)
-               + parseFloat(data.futureUtilities || 0)
-               + monthly.futureSavings(data || 0)
-               + monthly.homeMaintenanceAndImprovement(data || 0);
+  var income = sum([data.takeHomeIncome, data.takeHomeIncomeCB]);
+  var expenses = sum([data.debtPayments, data.livingExpenses, data.futureUtilities, data.homeImprovement, data.homeMaintenance, data.emergencySavings, data.longTermSavings]);
                
   return income - expenses;
 }
 
 monthly.estimatedTotalPayment = function (data) {
-  return monthly.availableHousingFunds(data) - parseFloat(data.condoHOA || 0);
+  return monthly.availableHousingFunds(data) - cleanNumber(data.condoHOA);
 }
 
 monthly.taxesAndInsurance = function (data) {
-  var homePrice = parseFloat(data.homePrice || 0);
-  var propertyTax = parseFloat((data.propertyTax  || 0) / 100);
-  var insurance = parseFloat(data.homeownersInsurance || 0);
+  var homePrice = cleanNumber(data.homePrice);
+  var propertyTax = cleanNumber((data.propertyTax ) / 100);
+  var insurance = cleanNumber(data.homeownersInsurance);
   var annualTaxesAndInsurance = (homePrice * propertyTax) + insurance;
   return annualTaxesAndInsurance / 12;
 }

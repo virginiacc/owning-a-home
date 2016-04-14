@@ -16,7 +16,7 @@ var MonthlyPaymentWorksheet = React.createClass({
     
     update: function (prop, val) {
         var worksheet = this.state.worksheet;
-        worksheet[prop] = val || 0;
+        worksheet[prop] = val || '';
         this.setState({worksheet: worksheet});
     },
     
@@ -392,7 +392,7 @@ var MonthlyPaymentWorksheet = React.createClass({
                       <div className="content-l input-row sources-note">
                         <div className="content-l_col content-l_col-1">
                           <div className="label">Wondering where we got our data?</div>
-                          <p><a href="/owning-a-home/process/sources/">Check out our sources</a></p>
+                          <p><a href="/owning-a-home/process/sources/" target="_blank">Check out our sources</a></p>
                         </div>
                       </div>
                       
@@ -543,7 +543,7 @@ var MonthlyPaymentWorksheet = React.createClass({
                       </div>
                     </div>
                     <div className="content-l content-l_col-1 note-row footnote-row">
-                      <p>* This worksheet assumes you are able to put down 20% of your home's purchase price. If you put down less than 20%, you will likely have to pay for mortgage insurance, which will increase your monthly payment. <a href="http://www.consumerfinance.gov/askcfpb/1953/what-is-mortgage-insurance-and-how-does-it-work.html">Learn more</a>.</p>
+                      <p>* This worksheet assumes you are able to put down 20% of your home's purchase price. If you put down less than 20%, you will likely have to pay for mortgage insurance, which will increase your monthly payment. <a href="http://www.consumerfinance.gov/askcfpb/1953/what-is-mortgage-insurance-and-how-does-it-work.html" target="_blank">Learn more</a>.</p>
                     </div>
                   </div>
                 </div>
@@ -568,8 +568,18 @@ var MonthlyPaymentWorksheet = React.createClass({
 
 });
 
-var worksheet = {};
+
+var worksheet = JSON.parse(localStorage.getItem('monthlyPaymentWorksheet'));
+worksheet || (worksheet = {});
 
 React.render(
   <MonthlyPaymentWorksheet worksheet={worksheet}/>, document.getElementById('app-container')
 );
+
+setInterval(function () {
+  localStorage.setItem('monthlyPaymentWorksheet', JSON.stringify(worksheet));
+}, 5000)
+
+window.onbeforeunload = function() {
+  localStorage.setItem('monthlyPaymentWorksheet', JSON.stringify(worksheet));
+};
