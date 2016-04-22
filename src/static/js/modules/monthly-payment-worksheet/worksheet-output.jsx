@@ -21,17 +21,14 @@ var WorksheetOutput = React.createClass({
   render: function() {
     var {data, prop, ...other} = this.props;
     var val, element;
-    if (data.hasOwnProperty(prop)) {
-      val = data[prop];
-    } else if (typeof calc[prop] === 'function') {
+     if (typeof calc[prop] === 'function') {
       val = calc[prop](data);
+    } else if   (data.hasOwnProperty(prop)) {
+        val = data[prop];
     }
+    
 
-    if (prop === 'percentageIncomeAvailable') {
-      element = (<span {...other}>{val || 0}%</span>)
-    } else {
-      element = (<OutputUSD value={val} {...other}/>)
-    }
+    element = (<OutputUSD value={val} {...other}/>)
 
     return element;
   }

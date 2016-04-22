@@ -50,7 +50,6 @@ var NumericInput = React.createClass({
     var numericVal = this.strip(val, true);  
     this.setState({value: numericVal});
     typeof this.props.onChange == 'function' && this.props.onChange(numericVal);
-    
   },
 
   componentWillReceiveProps: function (props) {
@@ -62,7 +61,7 @@ var NumericInput = React.createClass({
   render: function () {
     var {value, onChange, onKeyDown, ...other} = this.props;
     return (
-      <Input type="text" value={this.state.value} onKeyDown={this.keypress} onChange={this.change} onBlur={this.blur} {...other} />
+      <Input type="text" value={this.state.value} onChange={this.change} onBlur={this.blur} {...other} />
     );
   }
 });

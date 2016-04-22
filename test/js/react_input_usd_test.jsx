@@ -49,47 +49,38 @@ describe('Input USD react component tests', function () {
         expect(formattedVal).to.equal('$12');
       });
       
-      it('should correctly format a value with decimal places, rounding down', function() {
-        var formattedVal = renderedComponent.format(12.24);
-        expect(formattedVal).to.equal('$12');
-      });
-      
-      it('should correctly format a value with decimal places, rounding up', function() {
-        var formattedVal = renderedComponent.format(12.74);
-        expect(formattedVal).to.equal('$13');
-      });
-    });
-    
-    describe('tests component with passed in decimalPlaces prop', function() {
-    
       it('should truncate a value for display based on decimalPlaces prop', function() {
-        setupComponent({decimalPlaces: 2});
-        
         var formattedVal = renderedComponent.format(3.14159);
         expect(formattedVal).to.equal('$3.14');
       });
       
-      it('should add decimals to a value based on decimalPlaces prop', function() {
-        setupComponent({decimalPlaces: 2});
-        
-        var formattedVal = renderedComponent.format(3);
-        expect(formattedVal).to.equal('$3.00');
-      });
-      
       it('should display a non-existent value as zero, without decimal places', function() {
-        setupComponent({decimalPlaces: 2});
-        
         var formattedVal = renderedComponent.format();
         expect(formattedVal).to.equal('$0');
       });
       
       it('should display zero without decimal places', function() {
-        setupComponent({decimalPlaces: 2});
-        
         var formattedVal = renderedComponent.format(0);
         expect(formattedVal).to.equal('$0');
+      });      
+    });
+    
+    describe('tests component with passed in decimalPlaces prop', function() {
+      
+      it('should correctly format a value with decimal places, rounding down', function() {
+        setupComponent({decimalPlaces: 0});
+        
+        var formattedVal = renderedComponent.format(12.24);
+        expect(formattedVal).to.equal('$12');
       });
       
+      it('should correctly format a value with decimal places, rounding up', function() {
+        setupComponent({decimalPlaces: 0});
+        
+        var formattedVal = renderedComponent.format(12.74);
+        expect(formattedVal).to.equal('$13');
+      });
+    
     });
     
   });

@@ -4,6 +4,7 @@ require('jquery.scrollto');
 
 var InputUSD = require('./react-components/input-usd.jsx');
 var InputPercentage = require('./react-components/input-percent.jsx');
+var calc = require('./monthly-payment-calc');
 var WorksheetOutput = require('./monthly-payment-worksheet/worksheet-output.jsx');
 
 var MonthlyPaymentWorksheet = React.createClass({
@@ -480,7 +481,9 @@ var MonthlyPaymentWorksheet = React.createClass({
                         </div>
                       </div>
                     </div>
+                    
                   </div>
+                  
                   <div className="content-l_col content-l_col__before-divider content-l_col-1-2 col-right breakdown-col">
                     <h3>What's included in your total monthly housing obligations?</h3>
                     <p>The <strong><WorksheetOutput prop="availableHousingFunds" data={worksheet}/></strong> you have available for monthly housing obligations needs to cover your principal & interest payment, taxes and insurance, and condo/HOA fees.</p>
@@ -540,8 +543,11 @@ var MonthlyPaymentWorksheet = React.createClass({
                         <div className="content-l_col content-l_col-1 note-row">
                           <em>You'll need this number to calculate how much you want to spend on a home.</em>
                         </div>
+                        
+                        
                       </div>
                     </div>
+                    
                     <div className="content-l content-l_col-1 note-row footnote-row">
                       <p>* This worksheet assumes you are able to put down 20% of your home's purchase price. If you put down less than 20%, you will likely have to pay for mortgage insurance, which will increase your monthly payment. <a href="http://www.consumerfinance.gov/askcfpb/1953/what-is-mortgage-insurance-and-how-does-it-work.html" target="_blank">Learn more</a>.</p>
                     </div>

@@ -67,7 +67,6 @@ var Input = React.createClass({
   },
 
   render: function () {
-    console.log('render')
     var {value, onChange, onBlur, onFocus, ...other} = this.props;
     return (
       <input type="text" value={this.state.displayValue} onBlur={this.blur} onFocus={this.focus} onChange={this.change} {...other} />

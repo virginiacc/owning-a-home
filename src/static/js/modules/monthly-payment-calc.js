@@ -45,7 +45,9 @@ monthly.availableHousingFunds = function (data) {
 }
 
 monthly.estimatedTotalPayment = function (data) {
-  return monthly.availableHousingFunds(data) - cleanNumber(data.condoHOA);
+  var income = sum([data.takeHomeIncome, data.takeHomeIncomeCB]);
+  var expenses = sum([data.debtPayments, data.livingExpenses, data.futureUtilities, data.homeImprovement, data.homeMaintenance, data.emergencySavings, data.longTermSavings]);
+  return income - expenses - cleanNumber(data.condoHOA);
 }
 
 monthly.taxesAndInsurance = function (data) {
