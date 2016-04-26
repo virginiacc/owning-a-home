@@ -1,11 +1,14 @@
 var React = require('react');
 
-
 /**
 * Input.
+*
 * If optional formatter function is passed in,
 * formats the contents of an input when it is not focused,
 * and removes the formatting while input is active.
+* 
+* Type defaults to "text"; pass in "numeric=true" for
+* number input.
 */
 
 var Input = React.createClass({
@@ -14,7 +17,8 @@ var Input = React.createClass({
       React.PropTypes.string,
       React.PropTypes.number
     ]),
-    formatter: React.PropTypes.func
+    formatter: React.PropTypes.func,
+    numeric: React.PropTypes.bool
   },
 
   getInitialState: function () {
@@ -23,11 +27,15 @@ var Input = React.createClass({
       displayValue: this.format(this.props.value)
     };
   },
+  
+  getDefaultProps: function() {
+    return {
+      numeric: false
+    };
+  },
 
   format: function (val) {
-    return typeof this.props.formatter === 'function'
-           ? this.props.formatter(val) 
-           : val;
+    return typeof this.props.formatter === 'function' ? this.props.formatter(val) : val;
   },
 
   blur: function () {
@@ -36,40 +44,48 @@ var Input = React.createClass({
       focused: false,
       displayValue: this.format(val)
     }, function () {
-      typeof this.props.onBlur == 'function' && this.props.onBlur(val);
+      typeof this.props.onBlur == 'function' && this.props.onBlur(this.state.value);    
     });
-    
   },
 
   change: function (e) {
     var val = e.target.value;
-    this.setState({value: e.target.value});
-    typeof this.props.onChange == 'function' && this.props.onChange(val);
+    this.setState({
+      value: val,
+      displayValue: val
+    }, function () {
+      typeof this.props.onChange == 'function' && this.props.onChange(val);
+    });
   },
 
   focus: function () {
     this.setState({
       focused: true,
       displayValue: this.state.value
+    }, function () {
+      typeof this.props.onFocus == 'function' && this.props.onFocus(this.state.value);
     });
-    typeof this.props.onFocus == 'function' && this.props.onFocus(val);
   },
 
   componentWillReceiveProps: function (props) { 
-    if (props.hasOwnProperty('value') && (!this.state.focused || props.value !== this.state.value)) {
-      
-      var stateObj = {value: props.value};
-      stateObj.displayValue = this.state.focused 
-                              ? props.value 
-                              : this.format(props.value);
-      this.setState(stateObj);
+    // update value if props.value is different than state.value
+    if (props.value != this.state.value) {
+      this.setState({
+        value: props.value,
+        displayValue: this.state.focused ? props.value : this.format(props.value)
+      });
     }
+  },
+  
+  shouldComponentUpdate: function (nextProps, nextState) {
+    // re-render if displayValue has changed
+    return this.state.displayValue !== nextState.displayValue;
   },
 
   render: function () {
-    var {value, onChange, onBlur, onFocus, ...other} = this.props;
+    var {value, onChange, onBlur, onFocus, numeric, ...other} = this.props;
     return (
-      <input type="text" value={this.state.displayValue} onBlur={this.blur} onFocus={this.focus} onChange={this.change} {...other} />
+      <input type={this.props.numeric ? "number" : "text"} value={this.state.displayValue} onBlur={this.blur} onFocus={this.focus} onChange={this.change} {...other} />
     );
   }
 });

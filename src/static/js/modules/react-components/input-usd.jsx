@@ -25,7 +25,7 @@ var InputUSD = React.createClass({
   },
 
   format: function (val) {
-    // $0 doesn't need decimals
+    // $0 doesn't need decimals; don't force decimals where there are none
     var decimalPlaces = val && val.toString().indexOf(".") !== -1 ? this.props.decimalPlaces : 0;
     return formatUSD(positive(val) || 0, {decimalPlaces: decimalPlaces});
   },

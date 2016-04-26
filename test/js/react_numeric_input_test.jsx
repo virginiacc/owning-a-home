@@ -1,4 +1,4 @@
-describe('Formatted Numeric Input react component tests', function () {
+describe('Numeric Input react component tests', function () {
   
   global.expect = require('chai').expect;
   require('mocha-jsdom')();
@@ -33,7 +33,6 @@ describe('Formatted Numeric Input react component tests', function () {
     beforeEach(function () {
       //http://stackoverflow.com/questions/24280428/stubbing-a-react-component-method-with-sinon
       stripHandler = sandbox.spy(NumericInput.prototype.__reactAutoBindMap, 'strip');   
-      formatter = sandbox.spy(function (val) {return '^' + val + '^'});
     });
     
     describe('initial render tests', function() {
@@ -49,7 +48,17 @@ describe('Formatted Numeric Input react component tests', function () {
         sinon.assert.calledOnce(stripHandler);
         expect(input.getDOMNode().value).to.equal('123');
       });
+      
     });
+    
+    describe('change event tests', function() {
+    
+    });
+    
+    describe('blur event tests', function() {
+    
+    });
+    
   });
   
   // TODO: more variations on interaction tests
@@ -61,8 +70,11 @@ describe('Formatted Numeric Input react component tests', function () {
       var customChangeHandler = sandbox.spy();
       
       setupComponent({value: '123', onChange:customChangeHandler});
+      sinon.assert.notCalled(componentChangeHandler);      
+      sinon.assert.notCalled(customChangeHandler);
       
       TestUtils.Simulate.change(input, {});
+      
       sinon.assert.calledOnce(componentChangeHandler);      
       sinon.assert.calledOnce(customChangeHandler);      
     });
