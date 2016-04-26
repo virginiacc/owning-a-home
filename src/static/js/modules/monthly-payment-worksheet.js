@@ -1,4 +1,9 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
+
+var Sticky = require('react-sticky').Sticky;
+var StickyContainer = require('react-sticky').StickyContainer;
+
 var $ = jQuery = require('jquery');
 require('jquery.scrollto');
 
@@ -40,9 +45,13 @@ var MonthlyPaymentWorksheet = React.createClass({
           <div className="monthly-payment_worksheet">
             <section>
               <h2 className="indented-content" tabIndex="0">Assess your current income, spending, and savings.</h2>
-              <form className="block block__bg block__flush-top block__unpadded">
+              <form className="block block__flush-top">
+              <StickyContainer>
+              
                 <div className="content-l form-cols">
-                  <div className="content-l_col content-l_col-1-2 col-left">
+                  <div className="content-l_col content-l_col-2-3 col-left">
+                  
+                  
                     <fieldset>
                       <legend className="h3">
                         <span className="heading-number">1</span>Monthly income
@@ -127,8 +136,6 @@ var MonthlyPaymentWorksheet = React.createClass({
                         </div>
                       </fieldset>
                     </fieldset>
-                  </div>
-                  <div className="content-l_col content-l_col__before-divider content-l_col-1-2 col-right savings-section">
                     <fieldset>
                       <legend className="h3">
                         <span className="heading-number">2</span>Monthly spending and savings
@@ -216,15 +223,7 @@ var MonthlyPaymentWorksheet = React.createClass({
                       </div>
                       
                     </fieldset>
-                  </div>
-                </div>
-              </form>
-            </section>
-            <section className="estimate-section" id="estimate-section">
-              <h2 className="indented-content" tabIndex="0">Estimate your financial responsibilities after buying a home.</h2>
-              <form className="block block__bg block__flush-top block__unpadded">
-                <div className="content-l form-cols">
-                  <div className="content-l_col content-l_col-1-2 col-left">
+                    
                     <fieldset className="form-section-3">
                       <legend className="h3">
                         <span className="heading-number">3</span>Future monthly savings goals
@@ -328,8 +327,6 @@ var MonthlyPaymentWorksheet = React.createClass({
                       </div>
                       
                     </fieldset>
-                  </div>
-                  <div className="content-l_col content-l_col__before-divider content-l_col-1-2 col-right">
                     <fieldset>
                       <legend className="h3">
                         <span className="heading-number">5</span>Changed monthly expenses
@@ -398,9 +395,37 @@ var MonthlyPaymentWorksheet = React.createClass({
                       </div>
                       
                     </fieldset>
+                    
+                    
+                  </div>
+                  <div className="content-l_col content-l_col-1-3 col-left">
+                          <Sticky>
+                            HI
+                          </Sticky>
                   </div>
                 </div>
+                </StickyContainer>
+                
               </form>
+              
+            </section>
+            
+            <section className="estimate-section" id="estimate-section">
+              <h2 className="indented-content" tabIndex="0">Estimate your financial responsibilities after buying a home.</h2>
+              <form className="block block__bg block__flush-top block__unpadded">
+                <div className="content-l form-cols">
+                  <div className="content-l_col content-l_col-1-2 col-left">
+                    
+                  </div>
+                  <div className="content-l_col content-l_col__before-divider content-l_col-1-2 col-right">
+                    
+                  </div>
+                </div>
+                
+                
+              </form>
+              
+              
             </section>
             <section className="summary-section">
               <h2 className="indented-content" tabIndex="0">How much can you afford?</h2>
@@ -578,7 +603,7 @@ var MonthlyPaymentWorksheet = React.createClass({
 var worksheet = JSON.parse(localStorage.getItem('monthlyPaymentWorksheet'));
 worksheet || (worksheet = {});
 
-React.render(
+ReactDOM.render(
   <MonthlyPaymentWorksheet worksheet={worksheet}/>, document.getElementById('app-container')
 );
 

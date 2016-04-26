@@ -414,7 +414,7 @@ module.exports = function(grunt) {
         src: ['test/js/*.jsx'], // specifying file patterns works as well
         options: {
           coverageFolder: 'test/coverage',
-          mochaOptions: ['--compilers', 'jsx:./test/react_compiler.js'], // any extra options
+          mochaOptions: ['--compilers', 'jsx:babel-register'], // any extra options
           istanbulOptions: ['--harmony','--handle-sigint'],
           reportFormats: ['cobertura','lcov']
         }

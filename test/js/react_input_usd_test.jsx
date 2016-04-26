@@ -4,10 +4,10 @@ describe('Input USD react component tests', function () {
   require('mocha-jsdom')();
   var sinon = require('sinon');
   var React = require('react');
-  var ReactAddons = require('react/addons');
-  var TestUtils = React.addons.TestUtils;
+  var ReactDOM = require('react-dom');
+  var TestUtils = require('react-addons-test-utils');
   var InputUSD = require('../../src/static/js/modules/react-components/input-usd.jsx');
-  var renderedComponent, input;
+  var renderedComponent, input, sandbox;
 
   function setupComponent (props) {
     renderedComponent = TestUtils.renderIntoDocument(
@@ -94,10 +94,10 @@ describe('Input USD react component tests', function () {
     
     it('should pass to input element any additional props that are passed in', function() {
       setupComponent({value: '123'})
-      expect(input.getDOMNode().className).to.equal('');
+      expect(ReactDOM.findDOMNode(input).className).to.equal('');
       
       setupComponent({value: '123', className: 'test-class'})
-      expect(input.getDOMNode().className).to.equal('test-class');
+      expect(ReactDOM.findDOMNode(input).className).to.equal('test-class');
     });
     
   });

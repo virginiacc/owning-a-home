@@ -4,8 +4,8 @@ describe('Input react component tests', function () {
   require('mocha-jsdom')();
   var sinon = require('sinon');
   var React = require('react');
-  var ReactAddons = require('react/addons');
-  var TestUtils = React.addons.TestUtils;
+  var ReactDOM = require('react-dom');
+  var TestUtils = require('react-addons-test-utils');
   var Input = require('../../src/static/js/modules/react-components/input.jsx');
   var renderedComponent, input, sandbox;
 
@@ -30,12 +30,12 @@ describe('Input react component tests', function () {
   describe('setup tests', function() {
     it('should default to a text input', function() {
       setupComponent();
-      expect(input.getDOMNode().getAttribute('type')).to.equal('text');
+      expect(ReactDOM.findDOMNode(input).getAttribute('type')).to.equal('text');
     });
     
     it('should create a number input if numeric prop is true', function() {
       setupComponent({numeric: true});
-      expect(input.getDOMNode().getAttribute('type')).to.equal('number');
+      expect(ReactDOM.findDOMNode(input).getAttribute('type')).to.equal('number');
     });
   });
   
@@ -54,7 +54,7 @@ describe('Input react component tests', function () {
       it('should call format handler on init, and set input to value passed in if there is no formatting function', function() {
         setupComponent({value: 12});
         sinon.assert.calledOnce(formatHandler);
-        expect(input.getDOMNode().value).to.equal('12');        
+        expect(ReactDOM.findDOMNode(input).value).to.equal('12');        
       });
     });
     
@@ -63,7 +63,7 @@ describe('Input react component tests', function () {
         setupComponent({formatter: formatter, value: 12});
         sinon.assert.calledOnce(formatHandler);
         sinon.assert.calledOnce(formatter);
-        expect(input.getDOMNode().value).to.equal('^12^');
+        expect(ReactDOM.findDOMNode(input).value).to.equal('^12^');
       });
       
       it('should display formatted value on init, actual value when input is focused, and formatted value again when input is blurred', function() {
@@ -72,17 +72,17 @@ describe('Input react component tests', function () {
         sinon.assert.notCalled(blurHandler);
         sinon.assert.calledOnce(formatHandler);
         sinon.assert.calledOnce(formatter);
-        expect(input.getDOMNode().value).to.equal('^12^');
+        expect(ReactDOM.findDOMNode(input).value).to.equal('^12^');
 
         TestUtils.Simulate.focus(input);
         sinon.assert.calledOnce(focusHandler);
-        expect(input.getDOMNode().value).to.equal('12');
+        expect(ReactDOM.findDOMNode(input).value).to.equal('12');
 
         TestUtils.Simulate.blur(input);
         sinon.assert.calledOnce(blurHandler);
         sinon.assert.calledTwice(formatHandler);
         sinon.assert.calledTwice(formatter);
-        expect(input.getDOMNode().value).to.equal('^12^');
+        expect(ReactDOM.findDOMNode(input).value).to.equal('^12^');
       });
       
     });
@@ -104,12 +104,12 @@ describe('Input react component tests', function () {
     it('calls change handler on change event & updates value of input', function() {
       setupComponent({value: 12});
       sinon.assert.notCalled(changeHandler);
-      expect(input.getDOMNode().value).to.equal('12');
+      expect(ReactDOM.findDOMNode(input).value).to.equal('12');
 
       TestUtils.Simulate.change(input, {target: { value: 'a' }});
       sinon.assert.calledOnce(changeHandler);
       sinon.assert.notCalled(customChangeHandler);
-      expect(input.getDOMNode().value).to.equal('a');
+      expect(ReactDOM.findDOMNode(input).value).to.equal('a');
     });
     
     it('calls blur handler on blur event & updates focused state', function() {
@@ -179,12 +179,12 @@ describe('Input react component tests', function () {
     
     it('does not set a class on the input it generates by default', function() {
       setupComponent({value: '123'})
-      expect(input.getDOMNode().className).to.equal('');
+      expect(ReactDOM.findDOMNode(input).className).to.equal('');
     });
     
     it('will pass a className prop on the component to the input it generates', function() {
       setupComponent({value: '123', className: 'test-class'})
-      expect(input.getDOMNode().className).to.equal('test-class');
+      expect(ReactDOM.findDOMNode(input).className).to.equal('test-class');
     });
     
     it('does not call handler on keyup event', function() {

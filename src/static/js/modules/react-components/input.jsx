@@ -83,6 +83,7 @@ var Input = React.createClass({
   },
 
   render: function () {
+    console.log('render')
     var {value, onChange, onBlur, onFocus, numeric, ...other} = this.props;
     return (
       <input type={this.props.numeric ? "number" : "text"} value={this.state.displayValue} onBlur={this.blur} onFocus={this.focus} onChange={this.change} {...other} />

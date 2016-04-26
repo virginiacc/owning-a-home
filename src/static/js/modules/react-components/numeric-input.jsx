@@ -50,7 +50,7 @@ var NumericInput = React.createClass({
   
   cleanValForDisplay: function (val) {
     // strip non-numeric characters if necessary
-    cleanVal = this.strip(val, true);
+    var cleanVal = this.strip(val, true);
     
     // if value has changed, call onChange to update the value outside component as needed
     if (val != cleanVal) {
@@ -63,7 +63,7 @@ var NumericInput = React.createClass({
 
       // enforce decimal places if necessary
       if (this.props.decimalPlaces && cleanVal % 1 != 0) {
-      cleanVal = cleanVal.toFixed(this.props.decimalPlaces);
+        cleanVal = cleanVal.toFixed(this.props.decimalPlaces);
       }
   
       // format number if using strings
@@ -97,7 +97,8 @@ var NumericInput = React.createClass({
     // on focus, clear the input if its value == zero
     // placeholder zeros cause usability issues when editing inputs
     if (this.state.value == 0) {
-      state.value = null;
+      
+      state.value = '';
     }
     this.setState(
       state, function () {
@@ -106,6 +107,7 @@ var NumericInput = React.createClass({
   },
 
   componentWillReceiveProps: function (props) {
+    console.log('rec props')
     // update state if, after processing, new value !== current value
     var displayVal = this.state.focused ? this.strip(props.value) : this.cleanValForDisplay(props.value);
     if (displayVal !== this.state.value) {
