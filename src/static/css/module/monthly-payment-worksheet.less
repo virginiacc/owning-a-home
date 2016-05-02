@@ -196,6 +196,18 @@
   .note-row {
     margin-top: @grid_gutter-width / 2;
   }
+  
+  .sticky-outputs {
+    border: 1px solid @gray-50;
+    padding: unit(@grid_gutter-width / @base-font-size-px, em)
+                     unit((@grid_gutter-width / 2) / @base-font-size-px, em);
+            padding-bottom: unit((@grid_gutter-width * 2) / @base-font-size-px, em);
+
+            .respond-to-min(600px, {
+                padding: unit(45 / @base-font-size-px, em)
+                         unit(@grid_gutter-width / @base-font-size-px, em);
+            });
+  }
 }
   
   

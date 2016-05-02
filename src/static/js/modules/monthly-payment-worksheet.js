@@ -1,7 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var Sticky = require('react-sticky').Sticky;
 var StickyContainer = require('react-sticky').StickyContainer;
 
 var $ = jQuery = require('jquery');
@@ -9,6 +8,8 @@ require('jquery.scrollto');
 
 var InputUSD = require('./react-components/input-usd.jsx');
 var InputPercentage = require('./react-components/input-percent.jsx');
+var ResponsiveSticky = require('./react-components/responsive-sticky.jsx');
+
 var calc = require('./monthly-payment-calc');
 var WorksheetOutput = require('./monthly-payment-worksheet/worksheet-output.jsx');
 
@@ -49,7 +50,7 @@ var MonthlyPaymentWorksheet = React.createClass({
               <StickyContainer>
               
                 <div className="content-l form-cols">
-                  <div className="content-l_col content-l_col-2-3 col-left">
+                  <div className="content-l_col content-l_col-5-8 col-left">
                   
                   
                     <fieldset>
@@ -398,10 +399,20 @@ var MonthlyPaymentWorksheet = React.createClass({
                     
                     
                   </div>
-                  <div className="content-l_col content-l_col-1-3 col-left">
-                          <Sticky>
-                            HI
-                          </Sticky>
+                  <div className="content-l_col content-l_col-3-8">
+                          <ResponsiveSticky>
+                            <div className="block sticky-outputs">
+                              <h3>Estimated totals</h3>
+                              <div className="content-l output-row">
+                                <div className="label-col">
+                                  <div className="label">Total available funds for housing</div>
+                                </div>
+                                <div className="input-col">
+                                  <strong><WorksheetOutput prop="availableHousingFunds" data={worksheet}/></strong>
+                                </div>
+                              </div>
+                            </div>
+                          </ResponsiveSticky>
                   </div>
                 </div>
                 </StickyContainer>
