@@ -114,10 +114,6 @@ var NumericInput = React.createClass({
       this.setState({value: displayVal});
     }
   },
-  
-  shouldComponentUpdate: function (nextProps, nextState) {
-    return this.state.value !== nextState.value;
-  },
 
   render: function () {
     var {value, onChange, onBlur, onFocus, inputType, ...other} = this.props;

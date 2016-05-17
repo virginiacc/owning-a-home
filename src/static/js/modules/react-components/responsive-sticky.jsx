@@ -21,7 +21,7 @@ var ResponsiveSticky = React.createClass({
   
   updateSize: function () {
     var width = w.innerWidth || d.clientWidth || b.clientWidth;
-    var on = width > 599;
+    var on = width > 800;
     if (on != this.state.on) {
       this.setState({on: on});
     }
