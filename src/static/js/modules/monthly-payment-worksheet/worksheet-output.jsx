@@ -22,6 +22,10 @@ var WorksheetOutput = React.createClass({
       type: 'usd'
     }
   },
+  
+  shouldComponentUpdate: function (nextProps, nextState) {
+    return this.props.value !== nextProps.value;
+  },
 
   render: function() {
     var {value, placeholder, ...other} = this.props;

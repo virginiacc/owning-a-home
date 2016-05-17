@@ -26,14 +26,20 @@ var RangeInput = React.createClass({
     }
   },
   
+  shouldComponentUpdate: function (nextProps, nextState) {
+    return this.props.value !== nextProps.value || this.state.left !== nextState.left;
+  },
+  
   componentWillReceiveProps: function (props) {
-    var component = this;
-    this.setState({
-      value: props.value
-    }, function () {
-      var left = component.state.value / component.props.max * (component.refs['container'].offsetWidth-component.refs['currentValue'].offsetWidth);
-      component.setState({left: left});
-    });    
+    if (props.value !== this.props.value) {
+      var component = this;
+      this.setState({
+        value: props.value
+      }, function () {
+        var left = component.state.value / component.props.max * (component.refs['container'].offsetWidth-component.refs['currentValue'].offsetWidth);
+        component.setState({left: left});
+      });
+    }
   },
   
   componentDidMount: function () {
@@ -42,7 +48,6 @@ var RangeInput = React.createClass({
   },
 
   change: function (e) {
-    
     var val = e.target.value;
     var left = val / this.props.max * (this.refs['container'].offsetWidth-this.refs['currentValue'].offsetWidth);
     this.setState({value: e.target.value, left: left}, function () {
