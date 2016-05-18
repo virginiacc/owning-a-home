@@ -7,6 +7,8 @@ var OutputUSD = require('./../react-components/output-usd.jsx');
 * Range input.
 */
 
+// TODO: make output positioned by slider optional
+
 var RangeInput = React.createClass({
   propTypes: {
     
@@ -33,28 +35,36 @@ var RangeInput = React.createClass({
   componentWillReceiveProps: function (props) {
     if (props.value !== this.props.value) {
       var component = this;
-      this.setState({
-        value: props.value
-      }, function () {
-        var left = component.state.value / component.props.max * (component.refs['container'].offsetWidth-component.refs['currentValue'].offsetWidth);
-        component.setState({left: left});
-      });
+      this.setState({value: props.value}, this.updateOutputPosition);
     }
   },
   
   componentDidMount: function () {
-    var left = this.state.value / this.props.max * (this.refs['container'].offsetWidth-this.refs['currentValue'].offsetWidth);
+    this.updateOutputPosition();
+    
+    if (window.attachEvent) {
+      window.attachEvent('onresize', this.updateOutputPosition);
+    }
+    else if (window.addEventListener) {
+      window.addEventListener('resize', this.updateOutputPosition);
+    }
+  },
+  
+  updateOutputPosition: function () {
+    var left = this.getLeftOutputPosition(this.state.value);
     this.setState({left: left});
+  },
+  
+  getLeftOutputPosition: function (val) {
+    return val / this.props.max * (this.refs['container'].offsetWidth-this.refs['currentValue'].offsetWidth);
   },
 
   change: function (e) {
     var val = e.target.value;
-    var left = val / this.props.max * (this.refs['container'].offsetWidth-this.refs['currentValue'].offsetWidth);
+    var left = this.getLeftOutputPosition(val);
     this.setState({value: e.target.value, left: left}, function () {
       typeof this.props.onChange == 'function' && this.props.onChange(val);
-    });
-    //
-    
+    });    
   },
 
   render: function () {
@@ -76,7 +86,7 @@ var RangeInput = React.createClass({
           id="preferred"
           {...other}
           />
-          <div style={valStyle} ref="currentValue" className="currentValue"><OutputUSD value={this.state.value}/></div>
+          <div style={valStyle} ref="currentValue" className="currentValue"><OutputUSD value={this.state.value} className="medium-text"/></div>
           
       </div>
     );
