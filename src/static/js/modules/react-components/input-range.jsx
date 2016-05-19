@@ -29,13 +29,16 @@ var RangeInput = React.createClass({
   },
   
   shouldComponentUpdate: function (nextProps, nextState) {
-    return this.props.value !== nextProps.value || this.state.left !== nextState.left;
+    return this.props.value !== nextProps.value || this.props.max !== nextProps.max || this.state.left !== nextState.left;
   },
   
   componentWillReceiveProps: function (props) {
     if (props.value !== this.props.value) {
       var component = this;
       this.setState({value: props.value}, this.updateOutputPosition);
+    }
+    if (this.props.max !== nextProps.max && this.props.max < this.state.value) {
+      this.updateValue(this.props.max);
     }
   },
   
@@ -61,17 +64,20 @@ var RangeInput = React.createClass({
 
   change: function (e) {
     var val = e.target.value;
+    this.updateValue(val); 
+  },
+  
+  updateValue: function (val) {
     var left = this.getLeftOutputPosition(val);
     this.setState({value: e.target.value, left: left}, function () {
       typeof this.props.onChange == 'function' && this.props.onChange(val);
-    });    
+    });
   },
 
   render: function () {
     var {value, onChange, max, min, ...other} = this.props;
     
     var valStyle = {position: 'absolute', left: this.state.left + 'px', paddingTop: '5px'}
-    //var valStyle = {textAlign: 'center'};
     return (
       <div className="inputContainer" ref="container" style={{position: 'relative', marginBottom: '30px'}}>
         <input
