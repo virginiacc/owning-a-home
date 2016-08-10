@@ -1,2 +1,2 @@
-var formExplainer = require('./form-explainer.js');
+var formExplainer = require('./form-explainer.jsx');
 formExplainer.pageName = 'Closing Disclosure';

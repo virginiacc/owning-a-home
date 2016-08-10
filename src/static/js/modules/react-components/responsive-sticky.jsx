@@ -1,42 +1,44 @@
-var w, d, b;
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Sticky = require('react-sticky').Sticky;
+var util = require('../form-explainers/util.js');
 
-var ResponsiveSticky = React.createClass({
+class ResponsiveSticky extends React.Component {
   
-  getInitialState: function () {
-    return {
-      on: false
-    };
-  },
-  
-  componentDidMount: function() {
-    w = window;
-    d = document.documentElement;
-    b = document.getElementsByTagName('body')[0];
-    this.updateSize();
+  constructor(props) {
+    super(props);
+    this.state = {on: false}
+  }
+
+  componentDidMount = () =>{
+    this.checkWindowSize();
     window.addEventListener('resize', this.handleResize);
-  },
+  }
   
-  updateSize: function () {
-    var width = w.innerWidth || d.clientWidth || b.clientWidth;
+  checkWindowSize = () => {
+    const width = util.getWindowDimensions().width;
     var on = width > 600;
     if (on != this.state.on) {
       this.setState({on: on});
     }
-  },
+  }
+
+  getSticky () {
+    return this.refs.stickyComponent;
+  }
   
-  handleResize: function () {
-    this.updateSize(); 
-  },
+  handleResize = () => {
+    this.checkWindowSize(); 
+  }
   
-  render: function() {
+  render () {
+    const {children, ...props} = this.props;
+
     return (
-      <Sticky isActive={this.state.on}>{this.props.children}</Sticky>
+      <Sticky isActive={this.state.on} {...props} ref='stickyComponent'>{this.props.children}</Sticky>
     );
   }
   
-});
+};
 
 module.exports = ResponsiveSticky;
