@@ -84,8 +84,9 @@
 
 <!-- Common js -->
 <script src="{{ url_for('static', filename='js/main.js') }}?v6"></script>
-<!-- Adds nemo js -->
-<script src="{{ url_for('static', filename='js/base.js') }}?v6"></script>
+<!--[if gt IE 8]><!-->
+<script src="{{ url_for('static', filename='js/atomic.js') }}?v6"></script>
+<!--<![endif]-->
 <!-- Page-specific js -->
 {% if page_js %}
 <script src="{{ url_for('static', filename='js') }}/{{page_js}}.js?v6"></script>

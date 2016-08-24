@@ -112,7 +112,6 @@ module.exports = function(grunt) {
     browserify: {
       build: {
         src: [
-          './src/static/js/modules/base.js',
           './src/static/js/modules/loan-options.js',
           './src/static/js/modules/explore-rates.js',
           './src/static/js/modules/loan-estimate.js',
@@ -128,7 +127,6 @@ module.exports = function(grunt) {
           plugin: [
             ['factor-bundle', {
               entries: [
-                './src/static/js/modules/base.js',
                 './src/static/js/modules/loan-options.js',
                 './src/static/js/modules/explore-rates.js',
                 './src/static/js/modules/loan-estimate.js',
@@ -139,7 +137,6 @@ module.exports = function(grunt) {
                 //'./src/static/js/modules/prepare-worksheets/prepare-worksheets.js'
               ],
               o: [
-                'dist/static/js/base.js',
                 'dist/static/js/loan-options.js',
                 'dist/static/js/explore-rates.js',
                 'dist/static/js/loan-estimate.js',
@@ -153,6 +150,14 @@ module.exports = function(grunt) {
           ]
         }
       },
+
+      atomic: {
+        src: [
+          './src/static/js/modules/atomic.js'
+        ],
+        dest: 'dist/static/js/atomic.js'
+      },
+
       tests: {
         files: {
           './test/compiled_tests.js': ['./test/js/*.js'],
